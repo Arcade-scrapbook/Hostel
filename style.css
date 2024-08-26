@@ -1,0 +1,150 @@
+
+h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6, p, .navbar, .brand, a, .td-name, td, button, input, select, textarea {
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    font-family: "Montserrat", "Helvetica", Arial, sans-serif;
+    font-weight: 300;
+  }
+  
+  h1, .h1, h2, .h2, h3, .h3, h4, .h4 {
+    margin: 30px 0 0;
+  }
+  
+  h1, .h1 {
+    font-size: 3.6em;
+  }
+  
+  h2, .h2 {
+    font-size: 2.8em;
+  }
+  
+  h3, .h3 {
+    font-size: 1.825em;
+    line-height: 1.4;
+    margin: 20px 0 0px;
+  }
+  
+  h4, .h4 {
+    font-size: 1.6em;
+    line-height: 1.2em;
+  }
+  
+  h5, .h5 {
+    font-size: 1.35em;
+    line-height: 1.4em;
+  }
+  
+  h6, .h6 {
+    font-size: 0.9em;
+    font-weight: 600;
+    text-transform: uppercase;
+    line-height: 1.5em;
+  }
+  
+  p {
+    font-size: 15px;
+    line-height: 1.5em;
+    margin-bottom: 5px;
+  }
+  
+  h1 small, h2 small, h3 small, h4 small, h5 small, h6 small, .h1 small, .h2 small, .h3 small, .h4 small, .h5 small, .h6 small, h1 .small, h2 .small, h3 .small, h4 .small, h5 .small, h6 .small, .h1 .small, .h2 .small, .h3 .small, .h4 .small, .h5 .small, .h6 .small {
+    color: #9A9A9A;
+    line-height: 1.5em;
+  }
+  
+  h1 small, h2 small, h3 small, h1 .small, h2 .small, h3 .small {
+    font-size: 60%;
+  }
+  
+  .title,
+  .card-title,
+  .info-title,
+  .footer-brand,
+  .footer-big h5,
+  .footer-big h4,
+  .media .media-heading {
+    font-family: "Montserrat", "Helvetica", Arial, sans-serif;
+  }
+  .title,
+  .title a,
+  .card-title,
+  .card-title a,
+  .info-title,
+  .info-title a,
+  .footer-brand,
+  .footer-brand a,
+  .footer-big h5,
+  .footer-big h5 a,
+  .footer-big h4,
+  .footer-big h4 a,
+  .media .media-heading,
+  .media .media-heading a {
+    color: #333333;
+    text-decoration: none;
+  }
+  
+  .title-uppercase {
+    text-transform: uppercase;
+  }
+  
+  .description {
+    color: #9A9A9A;
+  }
+  
+  blockquote small {
+    font-style: normal;
+  }
+  
+  .text-muted {
+    color: #DDDDDD;
+  }
+  
+  .text-primary, .text-primary:hover {
+    color: #51cbce !important;
+  }
+  
+  .text-info, .text-info:hover {
+    color: #51bcda !important;
+  }
+  
+  .text-success, .text-success:hover {
+    color: #6bd098 !important;
+  }
+  
+  .text-warning, .text-warning:hover {
+    color: #fbc658 !important;
+  }
+  
+  .text-danger, .text-danger:hover {
+    color: #f5593d !important;
+  }
+  
+  .glyphicon {
+    line-height: 1;
+  }
+  
+  .heart {
+    color: #EB5E28;
+    animation: heathing 1s ease infinite;
+  }
+  
+  @keyframes heathing {
+    0% {
+      transform: scale(0.75);
+    }
+    20% {
+      transform: scale(1);
+    }
+    40% {
+      transform: scale(0.75);
+    }
+    60% {
+      transform: scale(1);
+    }
+    80% {
+      transform: scale(0.75);
+    }
+    100% {
+      transform: scale(0.75);
+    }
+  }
