@@ -107,3 +107,93 @@ $(document).on('click', '.navbar-toggler', function () {
         pk.misc.navbar_menu_visible = 1;
     }
 });
+
+pk = {
+    misc: {
+        navbar_menu_visible: 0
+    },
+
+    checkScrollForPresentationPage: debounce(function () {
+        oVal = ($(window).scrollTop() / 3);
+        big_image.css({
+            'transform': 'translate3d(0,' + oVal + 'px,0)',
+            '-webkit-transform': 'translate3d(0,' + oVal + 'px,0)',
+            '-ms-transform': 'translate3d(0,' + oVal + 'px,0)',
+            '-o-transform': 'translate3d(0,' + oVal + 'px,0)'
+        });
+    }, 4),
+
+    checkScrollForTransparentNavbar: debounce(function () {
+        if ($(document).scrollTop() > $(".navbar").attr("color-on-scroll")) {
+            if (transparent) {
+                transparent = false;
+                $('.navbar[color-on-scroll]').removeClass('navbar-transparent');
+            }
+        } else {
+            if (!transparent) {
+                transparent = true;
+                $('.navbar[color-on-scroll]').addClass('navbar-transparent');
+            }
+        }
+    }, 17),
+
+    initPopovers: function () {
+        if ($('[data-toggle="popover"]').length !== 0) {
+            $('body').append('<div class="popover-filter"></div>');
+
+            // Activate Popovers
+            $('[data-toggle="popover"]').popover().on('show.bs.popover', function () {
+                $('.popover-filter').click(function () {
+                    $(this).removeClass('in');
+                    $('[data-toggle="popover"]').popover('hide');
+                });
+                $('.popover-filter').addClass('in');
+            }).on('hide.bs.popover', function () {
+                $('.popover-filter').removeClass('in');
+            });
+        }
+    },
+    initCollapseArea: function () {
+        $('[data-toggle="pk-collapse"]').each(function () {
+            var thisdiv = $(this).attr("data-target");
+            $(thisdiv).addClass("pk-collapse");
+        });
+
+        $('[data-toggle="pk-collapse"]').hover(function () {
+            var thisdiv = $(this).attr("data-target");
+            if (!$(this).hasClass('state-open')) {
+                $(this).addClass('state-hover');
+                $(thisdiv).css({
+                    'height': '30px'
+                });
+            }
+
+        },
+            function () {
+                var thisdiv = $(this).attr("data-target");
+                $(this).removeClass('state-hover');
+
+                if (!$(this).hasClass('state-open')) {
+                    $(thisdiv).css({
+                        'height': '0px'
+                    });
+                }
+            }).click(function (event) {
+                event.preventDefault();
+
+                var thisdiv = $(this).attr("data-target");
+                var height = $(thisdiv).children('.panel-body').height();
+
+                if ($(this).hasClass('state-open')) {
+                    $(thisdiv).css({
+                        'height': '0px',
+                    });
+                    $(this).removeClass('state-open');
+                } else {
+                    $(thisdiv).css({
+                        'height': height + 30,
+                    });
+                    $(this).addClass('state-open');
+                }
+            });
+    },
