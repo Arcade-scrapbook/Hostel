@@ -197,3 +197,67 @@ pk = {
                 }
             });
     },
+    initSliders: function () {
+        // Sliders for demo purpose in refine cards section
+        if ($('#sliderRegular').length !== 0) {
+            var rangeSlider = document.getElementById('sliderRegular');
+            noUiSlider.create(rangeSlider, {
+                start: [5000],
+                range: {
+                    'min': [2000],
+                    'max': [10000]
+                }
+            });
+        }
+        if ($('#sliderDouble').length !== 0) {
+            var slider = document.getElementById('sliderDouble');
+            noUiSlider.create(slider, {
+                start: [20, 80],
+                connect: true,
+                range: {
+                    'min': 0,
+                    'max': 100
+                }
+            });
+        }
+    },
+};
+
+examples = {
+    initContactUsMap: function () {
+        var myLatlng = new google.maps.LatLng(44.433530, 26.093928);
+        var mapOptions = {
+            zoom: 14,
+            center: myLatlng,
+            scrollwheel: false, //we disable de scroll over the map, it is a really annoing when you scroll through page
+        };
+        var map = new google.maps.Map(document.getElementById("contactUsMap"), mapOptions);
+
+        var marker = new google.maps.Marker({
+            position: myLatlng,
+            title: "Hello World!"
+        });
+
+        // To add the marker to the map, call setMap();
+        marker.setMap(map);
+    }
+};
+
+// Returns a function, that, as long as it continues to be invoked, will not
+// be triggered. The function will be called after it stops being called for
+// N milliseconds. If `immediate` is passed, trigger the function on the
+// leading edge, instead of the trailing.
+
+function debounce(func, wait, immediate) {
+    var timeout;
+    return function () {
+        var context = this, args = arguments;
+        clearTimeout(timeout);
+        timeout = setTimeout(function () {
+            timeout = null;
+            if (!immediate) func.apply(context, args);
+        }, wait);
+        if (immediate && !timeout) func.apply(context, args);
+    };
+}
+
