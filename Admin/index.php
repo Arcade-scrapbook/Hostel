@@ -298,7 +298,163 @@ if (isset($_SESSION['role'])) {
                     }
                 }
             }
-</script>
+
+            window.onload = addHiddenClass;
+
+            window.onresize = addHiddenClass;
+
+            function updateTime() {
+                var now = new Date();
+                var hours = now.getHours();
+                var minutes = now.getMinutes();
+                var ampm = hours >= 12 ? 'PM' : 'AM';
+                hours = hours % 12;
+                hours = hours ? hours : 12;
+                minutes = minutes < 10 ? '0' + minutes : minutes;
+                var currentTime = hours + ':' + minutes + ' ' + ampm;
+                document.getElementById('current-time').textContent = currentTime;
+            }
+
+            setInterval(updateTime, 1000);
+
+            window.onload = updateTime;
+
+
+            document.addEventListener("DOMContentLoaded", addHiddenClass);
+        </script>
+        <div class="user-box first-box">
+            <div class="activity card user-box" style="--delay: .2s">
+				<div class="title">Boys Hostel</div>
+				<div class="activity-links">
+					<div class="activity-link active">A Wing</div>
+				</div>
+				
+                <div class="destination">
+    <?php
+    $token = "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";
+
+            $repoOwner = "Tejas2305";
+            $repoName = "Hostel-Webiste";
+// PHP code from above
+$servername = "sql302.infinityfree.com";
+$username = "if0_36375033";
+$password = "TC6VYgEIdbFI95H";
+$dbname = "if0_36375033_hostel";
+    $conn = new mysqli($servername, $username, $password, $dbname);
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+    $today = date("Y-m-d");
+    $first_day_of_week = date("Y-m-d", strtotime("monday this week", strtotime($today)));
+    $last_day_of_week = date("Y-m-d", strtotime("sunday this week", strtotime($today)));
+    $wing = "A";
+    $sql = "SELECT schedule.*, user.image FROM schedule JOIN user ON CONCAT(user.first, ' ', user.last) = schedule.name WHERE schedule.wing = '$wing' AND schedule.date BETWEEN '$first_day_of_week' AND '$last_day_of_week' ORDER BY schedule.date, schedule.start_time;";
+
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        $current_date = null;
+        $card_count = 0; // Initialize card counter
+        // Output data for each schedule entry
+        while ($row = $result->fetch_assoc()) {
+            // Output date and day only once if it's a new date
+            if ($row["date"] !== $current_date) {
+                // Check if the previous day's card count was odd
+                if ($card_count % 2 != 0) {
+                    echo '<div class="destination-card black-card"></div>';
+                }
+                $card_count = 0; // Reset card counter for new date
+                echo '<h3  style="display:inline-block;">' . $row["day"] . '<h5 style="display:inline-block; margin-left:10px;">[' . $row["date"] . ']</h5></h3>';
+                $current_date = $row["date"];
+            }
+            
+            
+           
+
+            echo '<div class="destination-card"><div class="destination-profile">';
+            echo '<img class="profile-img" src="' . $row["image"] . '" alt="Image"/>';
+            echo '<div class="destination-length">';
+            echo '<div class="name">' . $row["name"] . '</div>';
+            echo '<div>From ' . $row["start_time"] . ' Till ' . $row["end_time"] . '</div>';
+            echo '</div></div><div class="destination-points">';
+            echo '<div class="point">' . $row["phone"] . '</div>';
+            echo '</div></div>';
+
+            $card_count++; // Increment card counter
+        }
+        // Check if the last day's card count was odd
+        if ($card_count % 2 != 0) {
+            echo '<div class="destination-card black-card"></div>';
+        }
+    } else {
+        echo "No schedule found for wing " . $wing . " for the current week";
+    }
+    ?>
+</div>
+						
+								
+								
+                <br>
+                <br>
+
+				<div class="activity-links">
+					<div class="activity-link active">B Wing</div>
+				</div>
+                <br>
+				                <div class="destination">
+    <?php
+    $conn = new mysqli($servername, $username, $password, $dbname);
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+    $today = date("Y-m-d");
+    $first_day_of_week = date("Y-m-d", strtotime("monday this week", strtotime($today)));
+    $last_day_of_week = date("Y-m-d", strtotime("sunday this week", strtotime($today)));
+    $wing = "B";
+    $sql = "SELECT schedule.*, user.image FROM schedule JOIN user ON CONCAT(user.first, ' ', user.last) = schedule.name WHERE schedule.wing = '$wing' AND schedule.date BETWEEN '$first_day_of_week' AND '$last_day_of_week' ORDER BY schedule.date, schedule.start_time;";
+
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        $current_date = null;
+        $card_count = 0; // Initialize card counter
+        // Output data for each schedule entry
+        while ($row = $result->fetch_assoc()) {
+            // Output date and day only once if it's a new date
+            if ($row["date"] !== $current_date) {
+                // Check if the previous day's card count was odd
+                if ($card_count % 2 != 0) {
+                    echo '<div class="destination-card black-card"></div>';
+                }
+                $card_count = 0; // Reset card counter for new date
+                echo '<h3 style="display:inline-block;">' . $row["day"] . '<h5 style="display:inline-block; margin-left:10px;">[' . $row["date"] . ']</h5></h3>';
+                $current_date = $row["date"];
+            }
+
+           
+
+            echo '<div class="destination-card"><div class="destination-profile">';
+            echo '<img class="profile-img" src="' . $row["image"] . '" alt="Image"/>';
+            echo '<div class="destination-length">';
+            echo '<div class="name">' . $row["name"] . '</div>';
+            echo '<div>From ' . $row["start_time"] . ' Till ' . $row["end_time"] . '</div>';
+            echo '</div></div><div class="destination-points">';
+            echo '<div class="point">' . $row["phone"] . '</div>';
+            echo '</div></div>';
+
+            $card_count++; // Increment card counter
+        }
+        // Check if the last day's card count was odd
+        if ($card_count % 2 != 0) {
+            echo '<div class="destination-card black-card"></div>';
+        }
+    } else {
+        echo "No schedule found for wing " . $wing . " for the current week";
+    }
+    ?>
+</div>
+			</div>
+        </div>
     </div>
 </body>
 </html>
