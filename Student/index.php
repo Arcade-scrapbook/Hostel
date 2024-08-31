@@ -584,6 +584,122 @@ if (isset($_SESSION['role'])) {
                 </div>
             </div>
 
+    <div class=" transection" style="--delay: 1.2s">
+                <div class="transection-header cards-header">
+                    <div class="head">Transactions</div>
+                </div>
+                <div class="card" id="tran">
+                    <?php
+
+                    $conn = new mysqli($host, $username, $password, $database);
+
+                    if ($conn->connect_error) {
+                        die("Connection failed: " . $conn->connect_error);
+                    }
+
+                    $user_enrollment_number = $_SESSION["username"];
+
+                    $sql =
+                        "SELECT type, reason, amount, status,method FROM transaction WHERE enrollment_number = ?";
+                    $stmt = $conn->prepare($sql);
+                    $stmt->bind_param("s", $user_enrollment_number);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+
+                    $totalAmount = 0;
+
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+
+                            $type = $row["type"];
+                            $reason = $row["reason"];
+                            $amount = $row["amount"];
+                            $status = $row["status"];
+                            $method = $row["method"];
+
+                            if (strcasecmp($status, "unpaid") == 0) {
+                                $totalAmount -= $amount;
+                            }
+
+                            $moneyClass =
+                                strcasecmp($status, "paid") == 0
+                                ? "is-active"
+                                : "is-cancel";
+                            $moneySign =
+                                strcasecmp($status, "paid") == 0
+                                ? "(paid)" . $method . "<br>"
+                                : "(imposed)<br>";
+                    ?>
+
+                            <div class="credit-wrapper">
+                                <div class="credit-name">
+                                    <div class="credit-type"><?php echo htmlspecialchars(
+                                                                    $type
+                                                                ); ?></div>
+                                    <div class="credit-status"><?php echo htmlspecialchars(
+                                                                    $reason
+                                                                ); ?></div>
+                                </div>
+                                <div class="credit-money <?php echo $moneyClass; ?>"><?php echo $moneySign; ?> ₹<?php echo number_format(
+                                                                                                                    $amount,
+                                                                                                                    2
+                                                                                                                ); ?></div>
+                            </div>
+
+                    <?php
+                        }
+                    } else {
+                        echo "No transactions found.";
+                    }
+
+                    $stmt->close();
+                    $conn->close();
+                    ?>
+
+                </div>
+
+            </div>
+        </div>
     </div>
+    <script>
+        function updateCalendar(month, year) {
+            window.location.href = `?month=${month}&year=${year}#cal`;
+        }
+
+        document.getElementById('prevMonth').addEventListener('click', function() {
+            let month = <?php echo $month; ?>;
+            let year = <?php echo $year; ?>;
+            month--;
+            if (month < 1) {
+                month = 12;
+                year--;
+            }
+            updateCalendar(month, year);
+        });
+
+        document.getElementById('nextMonth').addEventListener('click', function() {
+            let month = <?php echo $month; ?>;
+            let year = <?php echo $year; ?>;
+            month++;
+            if (month > 12) {
+                month = 1;
+                year++;
+            }
+            updateCalendar(month, year);
+        });
+
+        var totalAmount = "<?php echo $totalAmount; ?>";
+        var formattedAmount = "₹" + parseFloat(totalAmount).toFixed(2);
+
+        var pendingPaymentElement = document.getElementById("pending_payment");
+        pendingPaymentElement.innerText = formattedAmount;
+
+        if (totalAmount < 0) {
+            pendingPaymentElement.style.color = "#d14b69";
+        } else if (totalAmount > 0) {
+            pendingPaymentElement.style.color = "#17a98a";
+        }
+    </script>
+
 </body>
 </html>
