@@ -839,3 +839,139 @@ button:hover {
     animation-delay: 1.8s;
 }
 
+.account-name {
+    margin: 20px 0 10px;
+    font-weight: 900;
+    text-align: center !important;
+}
+
+.account-title {
+    font-size: 15px;
+    margin-top: 5px;
+    padding-right: 10px;
+}
+
+.account-cash {
+    font-size: 22px;
+    font-weight: 500;
+    margin-bottom: 6px;
+    padding-top: 16px;
+    position: relative;
+}
+
+.account-cash:before {
+    content: "";
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background: #9b9ca7;
+    right: 10px;
+    border-radius: 50%;
+    box-shadow: -10px 0 0 0 #9b9ca7, 10px 0 0 0 #9b9ca7;
+    top: 24px;
+}
+
+.account-income {
+    font-size: 14px;
+}
+
+.account-iban {
+    margin-top: auto;
+    font-weight: 500;
+}
+
+.lable {
+    font-weight: 550 !important;
+}
+
+.account-text {
+    text-align: left;
+}
+
+.time {
+    height: 24px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    background: #4255d3;
+    font-size: 13px;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+}
+
+.v {
+    color: #3E4EC2;
+    margin-left: auto;
+}
+
+.data {
+    display: flex;
+    flex-direction: column;
+}
+
+.set {
+    border-bottom: 1px solid #2c2f42;
+    padding: 15px 0;
+}
+
+.date {
+    color: #818394;
+}
+
+.out,
+.in {
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+.in {
+    color: #1aa385;
+}
+
+.out {
+    color: #d14b69;
+}
+
+#ac {
+    padding: 0px 30px;
+}
+
+.in_out {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 10px;
+    background: radial-gradient(circle, #141834 0%, #13162f 100%);
+    align-items: center;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+
+    border-radius: 10px;
+    text-align: center;
+}
+
+.b {
+    display: flex;
+    flex-direction: row;
+    margin-left: 25px;
+    margin-bottom: 10px;
+}
+
+.log_out {
+    text-align: center;
+}
+
+.log_out {
+    display: none;
+    background: linear-gradient(45deg, #1a1d3a 0%, #212752 100%);
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-right: auto;
+    transition: all 0.5s;
+}
+
