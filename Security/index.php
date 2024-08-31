@@ -286,7 +286,101 @@ if (isset($_SESSION['role'])) {
                     }
                 }
             }
-                </script>
-    </div>
+ window.onload = addHiddenClass;
+
+            window.onresize = addHiddenClass;
+
+            function updateTime() {
+                var now = new Date();
+                var hours = now.getHours();
+                var minutes = now.getMinutes();
+                var ampm = hours >= 12 ? 'PM' : 'AM';
+                hours = hours % 12;
+                hours = hours ? hours : 12;
+                minutes = minutes < 10 ? '0' + minutes : minutes;
+                var currentTime = hours + ':' + minutes + ' ' + ampm;
+                document.getElementById('current-time').textContent = currentTime;
+            }
+
+            setInterval(updateTime, 1000);
+
+            window.onload = updateTime;
+
+
+            document.addEventListener("DOMContentLoaded", addHiddenClass);
+        </script>
+        <div class="user-box first-box search">
+            <form id="search-form">
+                <input type="text" id="search-input" placeholder="Search...">
+                <select id="search_criteria" name="search_criteria">
+                    <option value="name">Name</option>
+                    <option value="room_number">Room Number</option>
+                    <option value="enrollment_number">Enrollment Number</option>
+                </select>
+            </form>
+        </div>
+
+        <div id="user-container">
+            <!-- PHP code to display user information goes here -->
+            <?php
+            date_default_timezone_set('Asia/Kolkata');
+
+            $host = "sql302.infinityfree.com";
+            $username = "if0_36375033";
+            $password = "TC6VYgEIdbFI95H";
+            $database = "if0_36375033_hostel";
+
+            $conn = new mysqli($host, $username, $password, $database);
+
+            if ($conn->connect_error) {
+                die("Connection failed: " . $conn->connect_error);
+            }
+
+            if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["mark_present"])) {
+                $enrollment_no = $_POST["enrollment_no"];
+                $date = date("Y-m-d");
+                $time = date("H:i:s");
+                $status = '';
+                $current_time = date("H:i");
+
+                if ($current_time > "21:30") {
+                    $status = "late";
+                } else if ("20:45" < $current_time) {
+                    $status = "present";
+                }
+
+                $sql = "INSERT INTO attendance (date, time, status, user_id) VALUES (?, ?, ?, ?)";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("ssss", $date, $time, $status, $enrollment_no);
+
+                if ($stmt->execute()) {
+                    echo "<script>alert('" . $enrollment_no . " marked as " . $status . " successfully.')</script>";
+                } else {
+                    echo "Error: " . $stmt->error;
+                }
+
+                $stmt->close();
+            }
+
+            $sql = "SELECT * FROM user WHERE role = 'student' ORDER BY wing, room";
+            $result = $conn->query($sql);
+
+            $prevWing = null;
+            $prevRoom = null;
+
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    if ($row["wing"] !== $prevWing) {
+                        if ($prevWing !== null) {
+                            if ($prevRoom !== null) {
+                                echo "</div></div></div>";
+                            }
+                            echo "</div>";
+                        }
+                        echo "<div class='wing-container'><div class='custom-heading'>{$row["wing"]} Wing</div>";
+                        $prevWing = $row["wing"];
+                        $prevRoom = null;
+                    }
+                        ?>
     </body>
 </html>
