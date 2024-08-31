@@ -399,3 +399,401 @@ button:hover {
     font-size: 15px;
     font-weight: 500;
 }
+
+
+.cards.card {
+    border-radius: 0 0 6px 6px;
+    padding: 30px 20px;
+}
+
+.cards.card svg {
+    width: 24px;
+    margin-left: auto;
+    color: #818394;
+}
+
+.cards-head {
+    display: flex;
+    align-items: center;
+}
+
+
+.items {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 16px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.items.numbers {
+    margin-top: 0;
+}
+
+.item {
+    flex: 0 1 calc(100% / 7);
+    padding: 10px 5px;
+    text-align: center;
+}
+
+.item.is-active {
+    background: #4255d4;
+    border-radius: 50%;
+    color: #fff;
+}
+
+.item.disable {
+    color: #595b5b;
+}
+
+.absent {
+    color: red;
+}
+
+
+.lable{
+    font-weight: 550 !important;
+}
+.account-text{
+    text-align: left;
+}
+
+.time {
+    height: 24px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    background: #4255d3;
+    font-size: 13px;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+}
+.v{
+    color: #3E4EC2;
+    margin-left: auto;
+}
+
+
+
+.b{
+    display: flex;
+    flex-direction: row;
+    margin-left: 25px;
+    margin-bottom: 10px;
+}
+.log_out{
+    text-align: center;
+}
+.log_out {
+    display: none;
+    background: linear-gradient(45deg, #1a1d3a 0%, #212752 100%); /* Choose a background color that matches your website's theme */
+    color: #fff; /* Text color, adjust as needed */
+    padding: 10px 20px; /* Adjust padding as needed */
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-right: auto;
+    transition: all 0.5s;
+    
+    
+}
+
+.log_out:hover {
+    transform: scale(1.1);
+}
+.a {
+    justify-content: center; /* Center align the content horizontally */
+    align-items: center; /* Center align the content vertically */
+    margin-right: 20px;
+}
+
+.user-info:hover .log_out{
+    display: block;
+}
+
+
+
+
+
+@-webkit-keyframes turn {
+    100% {
+        transform: rotate(1turn);
+    }
+}
+
+@keyframes turn {
+    100% {
+        transform: rotate(1turn);
+    }
+}
+
+
+
+;
+
+
+@-webkit-keyframes fly {
+    40% {
+        transform: translate(-6px, -6px);
+    }
+
+    60% {
+        transform: translate(-12px, -2px);
+    }
+
+    100% {
+        transform: translate(0px, 0px);
+    }
+}
+
+@keyframes fly {
+    40% {
+        transform: translate(-6px, -6px);
+    }
+
+    60% {
+        transform: translate(-12px, -2px);
+    }
+
+    100% {
+        transform: translate(0px, 0px);
+    }
+}
+
+.transection {
+    flex-shrink: 0;
+    /* max-width: 310px; */
+    width: 100%;
+    margin-left: 20px;
+}
+
+.transection-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.transection .is-wait {
+    color: #3E4EC2;
+}
+
+.credit-wrapper {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    padding-top: 20px;
+    position: relative;
+}
+
+
+.credit-wrapper svg {
+    width: 38px;
+    padding: 3px;
+    border-radius: 6px;
+    margin-right: 12px;
+}
+
+.credit-wrapper path {
+    width: 24px;
+}
+
+.credit-money {
+    margin-left: auto;
+}
+
+.credit-money.is-active {
+    color: #1aa385;
+}
+
+.credit-money.is-cancel {
+    color: #d14b69;
+}
+
+.credit-money .is-wait {
+    color: #3E4EC2;
+}
+
+.credit-status {
+    font-size: 13px;
+    font-weight: normal;
+}
+
+.credit-type {
+    color: #e7e8ea;
+    margin-bottom: 6px;
+}
+
+@media screen and (max-width: 1500px) {
+    .wrapper {
+        max-width: 1200px;
+    }
+
+    .activity {
+        width: 49%;
+        max-width: none;
+    }
+
+    .discount {
+        width: 48%;
+        max-width: none;
+    }
+
+    .first-box {
+        flex-wrap: wrap;
+    }
+
+    .first-box .cards-wrapper {
+        width: 67%;
+        max-width: none;
+        margin: 20px 0;
+    }
+
+    .first-box .cards-wrapper .item.is-active {
+        background: none;
+        color: inherit;
+    }
+
+    .first-box .account-wrapper {
+        max-width: none;
+        width: calc(33% - 20px);
+        margin: 20px 0 20px 20px;
+    }
+
+    .second-box {
+        flex-wrap: wrap;
+    }
+
+    .second-box .cards-wrapper {
+        margin-top: 40px;
+        width: 66%;
+    }
+
+    .transection {
+        margin-top: 40px;
+        max-width: none;
+        width: 30%;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .time {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 1060px) {
+
+    .user-info .button,
+    .user-info .hour {
+        display: none;
+    }
+
+}
+
+@media screen and (max-width: 1020px) {
+    .user-box .cards-view {
+        display: none;
+    }
+
+    .user-box .cards-header .cards-button {
+        display: none;
+    }
+
+    .cards-header-date {
+        margin: auto;
+    }
+
+    .destination {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+}
+
+@media screen and (max-width: 930px) {
+    .second-box .cards-wrapper {
+        width: 100%;
+    }
+
+    .transection {
+        width: 100%;
+        margin-left: 0;
+        margin-top: 20px;
+    }
+
+    .header-link {
+        display: none;
+    }
+
+    .user-info .profile {
+        margin-right: 0;
+    }
+    .user-box {
+        margin-left: 5px;
+    }
+}
+
+@media screen and (max-width: 850px) {
+
+    .activity-card,
+    .discount {
+        width: 100%;
+    }
+
+    .user-box .discount {
+        margin-left: 0;
+        margin-top: 20px;
+    }
+
+    .left-side {
+        display: none;
+    }
+
+    .main-container {
+        padding-left: 10px;
+    }
+
+    .activity-links,
+    .destination {
+        margin-top: 20px;
+    }
+
+}
+
+@media screen and (max-width: 720px) {
+    .first-box .account-wrapper {
+        width: 100%;
+    }
+
+    .first-box .cards-wrapper {
+        width: 100%;
+    }
+
+    .second-box .cards.card {
+        overflow-y: auto;
+    }
+    .user-box {
+        margin-left: 0px;
+    }
+}
+
+@media screen and (max-width: 520px) {
+    .destination {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+}
+
+
+
+.user-box>* {
+    -webkit-animation: top 1s var(--delay) both;
+    animation: top 1s var(--delay) both;
+}
+
