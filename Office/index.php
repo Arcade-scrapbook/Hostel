@@ -464,14 +464,64 @@ if (isset($_SESSION['role'])) {
                                             </td>
                                             </form>
                                         </tr>";
-                                    } 
-                                ?>
+                                    } else {
+                                        echo "<tr>
+                                            <td class='credit-name'>{$fullName}</td>
+                                            <td class='credit-name'>{$row['enrollment_number']}</td>
+                                            <td class='credit-name'>{$row['reason']}</td>
+                                            <td class='credit-name'>{$row['status']}</td>
+                                            <td class='credit-name'>{$row['amount']}</td>
+                                            <td class='credit-name'>{$row['method']}</td>
+                                            <td></td>
+                                        </tr>";
+                                    }
+                                }
+                            } else {
+                                echo "<tr><td colspan='7'>No transactions found</td></tr>";
+                            }
+                            $conn->close();
+                            ?>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        function handlePaymentMethodChange(selectElement) {
+            const row = selectElement.closest('tr');
+            const transactionIdInput = row.querySelector('.search');
+            const paymentTypeInput = row.querySelector('input[name="paymentType"]');
+
+            if (selectElement.value === 'UPI') {
+                transactionIdInput.classList.remove('hidden');
+                transactionIdInput.required = true;
+                transactionIdInput.addEventListener('input', function () {
+                    paymentTypeInput.value = 'UPI: ' + transactionIdInput.value;
+                });
+            } else {
+                transactionIdInput.classList.add('hidden');
+                transactionIdInput.required = false;
+                paymentTypeInput.value = 'Cash';
+            }
+        }
+
+        // Search functionality
+        document.getElementById('search-input').addEventListener('input', function () {
+            const searchTerm = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#transaction-table tr');
+
+            rows.forEach(row => {
+                const enrollmentNumber = row.children[1].textContent.toLowerCase();
+                if (enrollmentNumber.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    </script>
 </body>
+
 </html>
-                                    
