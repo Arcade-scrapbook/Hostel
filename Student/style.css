@@ -213,3 +213,101 @@ body {
     display: none;
 }
 
+.user-info:hover .logout-button {
+    display: block;
+}
+
+button {
+    padding: 5px 10px;
+    background-color: #1aa385;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #14715a;
+}
+
+.user-info {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+}
+
+.user-info svg {
+    width: 20px;
+}
+
+.user-info .profile {
+    margin: 0 20px 0 12px;
+    width: 18px;
+}
+
+.button {
+    display: flex;
+    align-items: center;
+    color: #9b9ca7;
+    background: #1a1b3c;
+    border: none;
+    padding: 2px 12px;
+    border-radius: 4px;
+    margin-right: 20px;
+}
+
+.button svg {
+    margin-left: 10px;
+    width: 16px;
+}
+
+.user-box {
+    margin-top: 25px;
+    margin-left: 25px;
+    display: flex;
+}
+
+.user-box+.user-box {
+    margin-top: 20px;
+}
+
+.user-box+.user-box .cards-wrapper {
+    margin-left: 0;
+    flex-grow: 1;
+    max-width: none;
+}
+
+.user-box+.user-box .today {
+    margin-left: 30px;
+}
+
+.user-box+.user-box .cards-header {
+    padding: 20px 30px;
+    justify-content: space-between;
+}
+
+.user-box .cards-header,
+.user-box .cards-view {
+    display: flex;
+    align-items: center;
+    justify-content: center !important;
+}
+
+.user-box .cards-header svg,
+.user-box .cards-view svg {
+    width: 24px;
+}
+
+.user-box .cards-header .title,
+.user-box .cards-view .title {
+    margin: 0 16px;
+    font-size: 15px;
+    align-items: center;
+    align-content: center;
+}
+
+.user-box .cards-header-date svg,
+.user-box .cards-view-date svg {
+    width: 30px;
+}
+
