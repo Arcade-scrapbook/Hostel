@@ -975,3 +975,100 @@ button:hover {
     transition: all 0.5s;
 }
 
+
+.log_out:hover {
+    transform: scale(1.1);
+}
+
+.a {
+    justify-content: center;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.user-info:hover .log_out {
+    display: block;
+}
+
+@-webkit-keyframes turn {
+    100% {
+        transform: rotate(1turn);
+    }
+}
+
+@keyframes turn {
+    100% {
+        transform: rotate(1turn);
+    }
+}
+
+.table {
+    text-align: left;
+    padding: 0;
+}
+
+.table th {
+    font-size: 14px;
+    font-weight: normal;
+    padding-bottom: 16px;
+    margin: auto;
+}
+
+
+.table td {
+    font-size: 15px;
+    vertical-align: middle;
+    padding: 8px 3px;
+
+}
+
+.table td:last-of-type {
+    width: 30vw
+}
+
+
+@-webkit-keyframes fly {
+    40% {
+        transform: translate(-6px, -6px);
+    }
+
+    60% {
+        transform: translate(-12px, -2px);
+    }
+
+    100% {
+        transform: translate(0px, 0px);
+    }
+}
+
+@keyframes fly {
+    40% {
+        transform: translate(-6px, -6px);
+    }
+
+    60% {
+        transform: translate(-12px, -2px);
+    }
+
+    100% {
+        transform: translate(0px, 0px);
+    }
+}
+
+.transection {
+    flex-shrink: 0;
+    width: 100%;
+    margin-left: 20px;
+}
+
+.transection-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.transection .is-wait {
+    color: #3E4EC2;
+}
