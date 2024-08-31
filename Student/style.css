@@ -311,3 +311,108 @@ button:hover {
     width: 30px;
 }
 
+
+.user-box .cards-header .cards-button,
+.user-box .cards-view .cards-button {
+    background: #15193c;
+    padding: 10px 16px;
+    margin-right: 0;
+}
+
+.user-box .cards-header .cards-button svg,
+.user-box .cards-view .cards-button svg {
+    width: 16px;
+    margin: 0 2px 0 0;
+}
+
+.user-box .cards-header .date-wrapper,
+.user-box .cards-view .date-wrapper {
+    display: flex;
+    align-items: center;
+    margin: auto;
+}
+
+.user-box .cards-header .date-wrapper .title,
+.user-box .cards-view .date-wrapper .title {
+    margin: 0 16px;
+}
+
+.cards-view>svg {
+    margin-right: 12px;
+}
+
+.today {
+    position: relative;
+}
+
+.today:before {
+    content: "";
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background-color: #ef415c;
+    bottom: -8px;
+    right: 50%;
+    border-radius: 50%;
+}
+
+.card {
+    background: #1a2049;
+    background: radial-gradient(circle, #1a2049 0%, #13162f 100%);
+    padding: 40px 30px;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    width: 100%;
+}
+
+.card .title {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.card .subtitle {
+    font-size: 13px;
+    line-height: 1.6em;
+}
+
+.card+.card {
+    margin-left: 20px;
+}
+
+.activity {
+    max-width: 480px;
+}
+
+.activity .title {
+    margin-bottom: 20px;
+}
+
+.activity-links {
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+}
+
+.activity-link {
+    padding-bottom: 10px;
+    position: relative;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.activity-link+.activity-link {
+    margin-left: 25px;
+}
+
+.activity-link+.activity-link:before {
+    content: "";
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background-color: #ef415c;
+    top: -2px;
+    right: -8px;
+    border-radius: 50%;
+}
