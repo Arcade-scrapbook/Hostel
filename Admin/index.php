@@ -454,7 +454,148 @@ $dbname = "if0_36375033_hostel";
     ?>
 </div>
 			</div>
+
+
+
+
+<div class=" card" style="--delay: .4s; width:10px;">
+<div class="transection-header cards-header">
+    <div class="head">Transactions</div>
+</div>
+<div class="card" id="tran">
+<?php
+ $host = "sql302.infinityfree.com";
+    $username = "if0_36375033";
+    $password = "TC6VYgEIdbFI95H";
+    $dbname = "if0_36375033_hostel";
+?>
+    <?php
+// Start session
+session_start();
+
+// Database connection
+$conn = new mysqli($host, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Fetch the last 5 non-debit transactions based on imposed_date
+$sql = "SELECT enrollment_number, type, reason, amount FROM transaction WHERE type <> 'debit' ORDER BY imposed_date DESC LIMIT 5";
+$result = $conn->query($sql);
+
+$totalAmount = 0; // Initialize total amount
+$transactionsDisplayed = false; // Flag to check if any transactions are displayed
+
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $enrollment_number = $row['enrollment_number'];
+        $type = $row['type'];
+        $reason = $row['reason'];
+        $amount = $row['amount'];
+
+        // Calculate total amount
+        if ($type == 'credit') {
+            $totalAmount += $amount;
+        } else {
+            $totalAmount -= $amount;
+        }
+
+        $moneyClass = ($type == 'credit') ? 'is-active' : 'is-cancel';
+        $moneySign = ($type == 'credit') ? '+' : '(Imposed)<br>';
+        ?>
+
+        <div class="credit-wrapper">
+            <div class="credit-name">
+                <div class="credit-type"><?php echo htmlspecialchars($type); ?></div>
+                <div class="credit-status"><?php echo htmlspecialchars($reason); ?></div>
+                <div class="credit-enrollment">Enrollment: <?php echo htmlspecialchars($enrollment_number); ?></div>
+            </div>
+            <div class="credit-money <?php echo $moneyClass; ?>"><?php echo $moneySign; ?> ₹<?php echo number_format($amount, 2); ?></div>
         </div>
+
+        <?php
+        $transactionsDisplayed = true;
+    }
+}
+
+// If no non-debit transactions are found, fetch the last 5 debit transactions
+if (!$transactionsDisplayed) {
+    $sql = "SELECT enrollment_number, type, reason, amount FROM transaction WHERE type = 'debit' ORDER BY imposed_date DESC LIMIT 5";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $enrollment_number = $row['enrollment_number'];
+            $type = $row['type'];
+            $reason = $row['reason'];
+            $amount = $row['amount'];
+
+            // Calculate total amount
+            $totalAmount -= $amount;
+
+            $moneyClass = 'is-cancel';
+            $moneySign = '-';
+            ?>
+
+            <div class="credit-wrapper">
+                <div class="credit-name">
+                    <div class="credit-type"><?php echo htmlspecialchars($type); ?></div>
+                    <div class="credit-status"><?php echo htmlspecialchars($reason); ?></div>
+                    <div class="credit-enrollment">Enrollment: <?php echo htmlspecialchars($enrollment_number); ?></div>
+                </div>
+                <div class="credit-money <?php echo $moneyClass; ?>"><?php echo $moneySign; ?> ₹<?php echo number_format($amount, 2); ?></div>
+            </div>
+
+            <?php
+        }
+    } else {
+        echo "No transactions found.";
+    }
+}
+
+
+$conn->close();
+?>
+
+</div>
+</div>
+<?php
+session_start();
+
+// Enable error reporting
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+// Database connection
+$host = "sql302.infinityfree.com";
+$username = "if0_36375033";
+$password = "TC6VYgEIdbFI95H";
+$database = "if0_36375033_hostel";
+
+$conn = new mysqli($host, $username, $password, $database);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Fetch data from the transaction and user tables
+$sql = "SELECT u.wing, t.type, t.reason, t.amount, t.status 
+        FROM transaction t 
+        JOIN user u ON t.enrollment_number = u.user_id 
+        WHERE u.role = 'student'";
+
+$result = $conn->query($sql);
+
+// Initialize arrays to hold data
+$wingData = [];
+$totalPaid = 0;
+$totalUnpaid = 0;
+?>
+	</div>
     </div>
 </body>
 </html>
