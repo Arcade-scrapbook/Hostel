@@ -272,6 +272,95 @@ if (isset($_SESSION['role'])) {
                                                         $_SESSION["mname"] .
                                                         " " .
                                                         $_SESSION["lname"]; ?></div>
+                         <table class="account-table">
+                            <tr>
+                                <td class="account-title"><span class="lable">Enrollment No: </span></td>
+                                <td><?php echo $_SESSION["username"]; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="account-title"><span class="lable">Phone number: </span></td>
+                                <td><?php echo $_SESSION["phone"]; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="account-title"><span class="lable">City: </span></td>
+                                <td><?php echo $_SESSION["address"]; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="account-title"><span class="lable">Parents phone no.: </span></td>
+                                <td><?php echo $_SESSION["phone_p"]; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="account-title"><span class="lable">Birth Date: </span></td>
+                                <td><?php echo date(
+                                        "d/m/Y",
+                                        strtotime($_SESSION["birthdate"])
+                                    ); ?></td>
+                            </tr>
+                            <tr>
+                                <td class="account-title"><span class="lable">Blood Group: </span></td>
+                                <td><?php echo $_SESSION["blood"]; ?></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="discount-wrapper">
+                    <div class="discount-info">
+                        <div class="subtitle">Pending Payment:</div>
+                        <div class="subtitle-count" id="pending_payment">₹0</div>
+                    </div>
+                </div>
+            </div>
+            <?php
+
+            function fetchAttendanceData($user_id, $month, $year)
+            {
+                global $host, $username, $password, $database;
+
+                $conn = new mysqli($host, $username, $password, $database);
+
+                if ($conn->connect_error) {
+                    die("Connection failed: " . $conn->connect_error);
+                }
+
+                $sql = "SELECT date, status, time FROM attendance WHERE user_id = $user_id AND MONTH(date) = $month AND YEAR(date) = $year";
+                $result = $conn->query($sql);
+
+                $attendance_data = [];
+
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        $attendance_data[$row["date"]] = [
+                            "status" => $row["status"],
+                            "time" => $row["time"],
+                        ];
+                    }
+                }
+
+                $conn->close();
+                return $attendance_data;
+            }
+
+            $user_id = isset($_SESSION["username"]) ? $_SESSION["username"] : "0";
+            $month = isset($_GET["month"]) ? (int) $_GET["month"] : date("n");
+            $year = isset($_GET["year"]) ? (int) $_GET["year"] : date("Y");
+            $attendance_data = fetchAttendanceData($user_id, $month, $year);
+            ?>
+            <div class="cards-wrapper" id="cal" style="--delay: .6s">
+                <div class="cards-header">
+                    <div class="cards-header-date">
+                        <svg id="prevMonth" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-left" style="cursor: pointer;">
+                            <path d="M15 18l-6-6 6-6"></path>
+                        </svg>
+                        <div class="title"><?php echo date(
+                                                "F Y",
+                                                strtotime("$year-$month-01")
+                                            ); ?></div>
+                        <svg id="nextMonth" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right" style="cursor: pointer;">
+                            <path d="M9 18l6-6-6-6"></path>
+                        </svg>
+                    </div>
+                </div>
+
 
     </div>
 </body>
