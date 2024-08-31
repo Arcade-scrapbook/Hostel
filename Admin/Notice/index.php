@@ -309,6 +309,131 @@ function showDateTimeFields() {
                 <div class="hour" id="current-time">08.20 pm</div>
             </div>
         </div>
+                <script>
+            function logout() {
+                localStorage.clear();
+                sessionStorage.clear();
+
+                document.cookie.split(';').forEach(function(cookie) {
+                    var cookieName = cookie.split('=')[0].trim();
+                    document.cookie = cookieName + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+                });
+
+                window.location.href = '/Login';
+            }
+            document.addEventListener('DOMContentLoaded', function() {
+
+
+                var navIcon2 = document.getElementById('nav-icon2');
+
+                navIcon2.addEventListener('click', function() {
+
+                    this.classList.toggle('open');
+
+                    var elements = document.querySelectorAll('.header-link, .user-info');
+
+                    elements.forEach(function(element) {
+
+                        if (element.classList.contains('hidden')) {
+                            element.classList.remove('hidden');
+                            element.classList.add('visible');
+                        } else if (element.classList.contains('visible')) {
+                            element.classList.remove('visible');
+                            element.classList.add('hidden');
+                        } else {
+
+                            element.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+
+            function addHiddenClass() {
+                const navIcon = document.getElementById('nav-icon2');
+                console.log(window.innerWidth);
+                if (window.innerWidth < 851) {
+                    const elements = document.querySelectorAll('.header-link, .user-info');
+                    elements.forEach(element => {
+                        element.classList.add('hidden');
+                    });
+                    if (navIcon) {
+                        navIcon.style.display = 'block';
+                    }
+                } else {
+                    const elements = document.querySelectorAll('.header-link.hidden, .user-info.hidden');
+                    elements.forEach(element => {
+                        element.classList.remove('hidden');
+                    });
+                    if (navIcon) {
+                        navIcon.style.display = 'none';
+                    }
+                }
+            }
+
+            window.onload = addHiddenClass;
+
+            window.onresize = addHiddenClass;
+
+            function updateTime() {
+                var now = new Date();
+                var hours = now.getHours();
+                var minutes = now.getMinutes();
+                var ampm = hours >= 12 ? 'PM' : 'AM';
+                hours = hours % 12;
+                hours = hours ? hours : 12;
+                minutes = minutes < 10 ? '0' + minutes : minutes;
+                var currentTime = hours + ':' + minutes + ' ' + ampm;
+                document.getElementById('current-time').textContent = currentTime;
+            }
+
+            setInterval(updateTime, 1000);
+
+            window.onload = updateTime;
+
+
+            document.addEventListener("DOMContentLoaded", addHiddenClass);
+        </script>
+    <div class="user-box first-box activity card">
+        <h1>Notice</h1>
+        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+            <div class="field">
+                <label>Type:</label>
+                <select id="search_criteria" name="search_criteria" class="select" onchange="showDateTimeFields()">
+                    <option value="">Select</option>
+                    <option value="Important Meeting">Important Meeting</option>
+                    <option value="General Meeting">General Meeting</option>
+                    <option value="Fine Imposed">Fine Imposed</option>
+                    <option value="Ultimatum">Ultimatum</option>
+                    <option value="New Rule">New Rule</option>
+                </select>
+            </div>
+            <div class="field">
+                <label>Wing:</label>
+                <select id="wing" name="wing" class="select">
+                    <option value="A Wing">A Wing</option>
+                    <option value="B Wing">B Wing</option>
+                    <option value="All">All</option>
+                </select>
+            </div>
+            <div class="field" id="date_field" style="display: none;">
+                <label>Date:</label>
+                <input type="date" name="date" class="search">
+            </div>
+            <div class="field" id="time_field" style="display: none;">
+                <label>Time:</label>
+                <input type="time" name="time" placeholder="Time" class="search">
+            </div>
+            <div class="field" id="topic_field" style="display: none;">
+                <label>Topic:</label>
+                <input type="text" name="topic" placeholder="Topic" class="search">
+            </div>
+            <div class="field">
+                <label>Notice</label>
+                <textarea id="notice" name="notice" placeholder="Notice....." class="search" rows="4" cols="30" style="margin-left: 25px;"></textarea>
+            </div>
+            <button type="submit" class="submit-button">Submit</button>
+        </form>
+    </div>
 </div>
 </body>
 </html>
