@@ -20,6 +20,162 @@ if (isset($_SESSION['role'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        #nav-icon1,
+        #nav-icon2,
+        #nav-icon3,
+        #nav-icon4 {
+            width: 60px;
+            height: 45px;
+            position: relative;
+            margin: 50px auto;
+            -webkit-transform: rotate(0deg);
+            -moz-transform: rotate(0deg);
+            -o-transform: rotate(0deg);
+            transform: rotate(0deg);
+            -webkit-transition: .5s ease-in-out;
+            -moz-transition: .5s ease-in-out;
+            -o-transition: .5s ease-in-out;
+            transition: .5s ease-in-out;
+            cursor: pointer;
+        }
+
+        #nav-icon1 span,
+        #nav-icon3 span,
+        #nav-icon4 span {
+            display: block;
+            position: absolute;
+            height: 9px;
+            width: 100%;
+            background: #d3531a;
+            border-radius: 9px;
+            opacity: 1;
+            left: 0;
+            -webkit-transform: rotate(0deg);
+            -moz-transform: rotate(0deg);
+            -o-transform: rotate(0deg);
+            transform: rotate(0deg);
+            -webkit-transition: .25s ease-in-out;
+            -moz-transition: .25s ease-in-out;
+            -o-transition: .25s ease-in-out;
+            transition: .25s ease-in-out;
+        }
+
+        #nav-icon2 {
+            position: fixed;
+            left: 10px;
+        }
+
+        #nav-icon2 span {
+            display: block;
+            position: absolute;
+            height: 7px;
+            width: 50%;
+            background: #c7c7c7;
+            opacity: 1;
+            -webkit-transform: rotate(0deg);
+            -moz-transform: rotate(0deg);
+            -o-transform: rotate(0deg);
+            transform: rotate(0deg);
+            -webkit-transition: .25s ease-in-out;
+            -moz-transition: .25s ease-in-out;
+            -o-transition: .25s ease-in-out;
+            transition: .25s ease-in-out;
+
+        }
+
+        #nav-icon2 span:nth-child(even) {
+            left: 50%;
+            border-radius: 0 9px 9px 0;
+        }
+
+        #nav-icon2 span:nth-child(odd) {
+            left: 0px;
+            border-radius: 9px 0 0 9px;
+        }
+
+        #nav-icon2 span:nth-child(1),
+        #nav-icon2 span:nth-child(2) {
+            top: 0px;
+        }
+
+        #nav-icon2 span:nth-child(3),
+        #nav-icon2 span:nth-child(4) {
+            top: 18px;
+        }
+
+        #nav-icon2 span:nth-child(5),
+        #nav-icon2 span:nth-child(6) {
+            top: 36px;
+        }
+
+        #nav-icon2.open span:nth-child(1),
+        #nav-icon2.open span:nth-child(6) {
+            -webkit-transform: rotate(45deg);
+            -moz-transform: rotate(45deg);
+            -o-transform: rotate(45deg);
+            transform: rotate(45deg);
+        }
+
+        #nav-icon2.open span:nth-child(2),
+        #nav-icon2.open span:nth-child(5) {
+            -webkit-transform: rotate(-45deg);
+            -moz-transform: rotate(-45deg);
+            -o-transform: rotate(-45deg);
+            transform: rotate(-45deg);
+        }
+
+        #nav-icon2.open span:nth-child(1) {
+            left: 5px;
+            top: 7px;
+        }
+
+        #nav-icon2.open span:nth-child(2) {
+            left: calc(50% - 5px);
+            top: 7px;
+        }
+
+        #nav-icon2.open span:nth-child(3) {
+            left: -50%;
+            opacity: 0;
+        }
+
+        #nav-icon2.open span:nth-child(4) {
+            left: 100%;
+            opacity: 0;
+        }
+
+        #nav-icon2.open span:nth-child(5) {
+            left: 5px;
+            top: 29px;
+        }
+
+        #nav-icon2.open span:nth-child(6) {
+            left: calc(50% - 5px);
+            top: 29px;
+        }
+
+        .top {
+
+            display: flex;
+            flex-direction: row;
+
+        }
+
+        .hidden {
+            opacity: 0;
+            transition: opacity 2s ease-out;
+        }
+
+        .visible {
+            opacity: 1;
+            transition: opacity 2s ease-in;
+
+        }
+        .logo{
+            padding:20px 50px 20px 50px;
+        }
+    </style>
 
 </head>
 
@@ -191,7 +347,7 @@ if (isset($_SESSION['role'])) {
             document.addEventListener("DOMContentLoaded", setMarginLeftToZero);
             window.addEventListener("resize", setMarginLeftToZero);
         </script>
-<div class="user-box first-box">
+        <div class="user-box first-box">
             <div class="activity card" style="--delay: .2s">
                 <div class="title"><?php echo $_SESSION["wing"]; ?> Wing</div>
                 <div class="title">Room Number: <?php echo $_SESSION["room"]; ?></div>
@@ -272,7 +428,8 @@ if (isset($_SESSION['role'])) {
                                                         $_SESSION["mname"] .
                                                         " " .
                                                         $_SESSION["lname"]; ?></div>
-                         <table class="account-table">
+
+                        <table class="account-table">
                             <tr>
                                 <td class="account-title"><span class="lable">Enrollment No: </span></td>
                                 <td><?php echo $_SESSION["username"]; ?></td>
@@ -360,7 +517,8 @@ if (isset($_SESSION['role'])) {
                         </svg>
                     </div>
                 </div>
-<div class="cards card">
+
+                <div class="cards card">
                     <div class="cards-head">
                         <div class="cards-info">
                             <div class="degree">
@@ -466,7 +624,8 @@ if (isset($_SESSION['role'])) {
                         }
                     });
                 });
-           document.addEventListener('click', function(event) {
+
+                document.addEventListener('click', function(event) {
                     var popup = document.getElementById('popup');
                     var popupClose = document.getElementById('popup-close');
                     if (!event.target.classList.contains('item') && event.target != popupClose) {
@@ -583,8 +742,7 @@ if (isset($_SESSION['role'])) {
                     </table>
                 </div>
             </div>
-
-    <div class=" transection" style="--delay: 1.2s">
+            <div class=" transection" style="--delay: 1.2s">
                 <div class="transection-header cards-header">
                     <div class="head">Transactions</div>
                 </div>
@@ -700,6 +858,6 @@ if (isset($_SESSION['role'])) {
             pendingPaymentElement.style.color = "#17a98a";
         }
     </script>
-
 </body>
+
 </html>
