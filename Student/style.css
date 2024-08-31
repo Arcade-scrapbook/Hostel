@@ -1,0 +1,108 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap");
+
+/* Custom scrollbar for WebKit browsers (e.g., Chrome, Safari) */
+/* Custom scrollbar for WebKit (Chrome, Safari) */
+::-webkit-scrollbar {
+    width: 10px;
+    /* Set the desired width */
+    margin-right: 10px;
+    /* Set the desired right margin */
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgba(136, 136, 136, 0.1);
+    /* Adjust alpha for translucency */
+    border-radius: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: rgba(241, 241, 241, 0);
+    /* Fully transparent */
+}
+
+/* Custom scrollbar for Firefox */
+body {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(136, 136, 136, 0.1) rgba(241, 241, 241, 0);
+    /* Adjust alpha for translucency */
+}
+
+/* Custom scrollbar for Edge and IE */
+body::-ms-scrollbar {
+    width: 10px;
+    /* Set the desired width */
+}
+
+body::-ms-scrollbar-thumb {
+    background-color: rgba(136, 136, 136, 0.1);
+    /* Adjust alpha for translucency */
+    border-radius: 6px;
+}
+
+body::-ms-scrollbar-track {
+    background-color: rgba(241, 241, 241, 0);
+    /* Fully transparent */
+}
+
+
+:root {
+    --delay: 0s;
+}
+
+* {
+    outline: none;
+    box-sizing: border-box;
+}
+
+.hidden {
+    display: none !important;
+}
+
+html {
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+}
+
+img {
+    max-width: 100%;
+}
+
+body {
+    font-family: "Inter", sans-serif;
+    background-color: #252954;
+    color: #9b9ca7;
+}
+
+.wrapper {
+    min-width: 100%;
+    background-color: #0e0e23;
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+
+@-webkit-keyframes left {
+    0% {
+        transform: translateX(-30px);
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@keyframes left {
+    0% {
+        transform: translateX(-30px);
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+        transform: none;
+    }
+}
