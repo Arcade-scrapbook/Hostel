@@ -191,6 +191,88 @@ if (isset($_SESSION['role'])) {
             document.addEventListener("DOMContentLoaded", setMarginLeftToZero);
             window.addEventListener("resize", setMarginLeftToZero);
         </script>
+<div class="user-box first-box">
+            <div class="activity card" style="--delay: .2s">
+                <div class="title"><?php echo $_SESSION["wing"]; ?> Wing</div>
+                <div class="title">Room Number: <?php echo $_SESSION["room"]; ?></div>
+                <div class="activity-links">
+                    <div class="activity-link active">Room Mates</div>
+                </div>
+                <div class="destination">
+                    <?php
+                    $sql =
+                        "SELECT * FROM user WHERE room = '" .
+                        $_SESSION["room"] .
+                        "' AND user_id <> '" .
+                        $_SESSION["username"] .
+                        "'";
+                    $result = mysqli_query($connection, $sql);
+
+                    if (mysqli_num_rows($result) > 0) {
+
+                        while ($row = mysqli_fetch_assoc($result)) {
+
+                            echo '<div class="destination-card">';
+                            echo '<div class="destination-profile">';
+                            echo '<img class="profile-img" src="' .
+                                $row["image"] .
+                                '" alt="" />';
+                            echo '<div class="destination-length">';
+                            echo '<div class="name">' .
+                                $row["first"] .
+                                " " .
+                                $row["middle"] .
+                                " " .
+                                $row["last"] .
+                                "</div>";
+                            echo "<div>(" . $row["dept"] . ")</div>";
+                            echo "</div>";
+                            echo "</div>";
+                            echo '<div class="destination-points">';
+                            echo '<div class="point">' . $row["phone_no"] . "</div>";
+                            echo '<div class="sub-point">' . $row["address"] . "</div>";
+                            echo '<div class="sub-point">' .
+                                date("d/m/Y", strtotime($row["birthdate"])) .
+                                "</div>";
+                            echo "</div>";
+                            echo "</div>";
+                        }
+                    } else {
+                        echo "No users found in room";
+                    }
+                    ?>
+                </div>
+            </div>
+            <div class="discount card" style="--delay: .4s">
+                <?php
+
+                $stmt = $connection->prepare("SELECT image FROM user WHERE user_id = ?");
+                $stmt->bind_param("s", $_SESSION["username"]);
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                $image = $result->fetch_assoc()["image"] ?? null;
+
+                $stmt->close();
+
+                $connection->close();
+                ?>
+
+                <div class="title">Your Profile</div>
+                <div class="account-profile">
+                    <img src="<?php echo $image; ?>" alt="">
+                    <div class="blob-wrap">
+                        <div class="blob"></div>
+                        <div class="blob"></div>
+                        <div class="blob"></div>
+                    </div>
+                    <div class="account-text">
+                        <div class="account-name"><?php echo $_SESSION["fname"] .
+                                                        " " .
+                                                        $_SESSION["mname"] .
+                                                        " " .
+                                                        $_SESSION["lname"]; ?></div>
+
     </div>
 </body>
 </html>
