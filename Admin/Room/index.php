@@ -296,7 +296,172 @@ if (isset($_SESSION['role'])) {
                     }
                 }
             }
-</script>
+
+            window.onload = addHiddenClass;
+
+            window.onresize = addHiddenClass;
+
+            function updateTime() {
+                var now = new Date();
+                var hours = now.getHours();
+                var minutes = now.getMinutes();
+                var ampm = hours >= 12 ? 'PM' : 'AM';
+                hours = hours % 12;
+                hours = hours ? hours : 12;
+                minutes = minutes < 10 ? '0' + minutes : minutes;
+                var currentTime = hours + ':' + minutes + ' ' + ampm;
+                document.getElementById('current-time').textContent = currentTime;
+            }
+
+            setInterval(updateTime, 1000);
+
+            window.onload = updateTime;
+
+
+            document.addEventListener("DOMContentLoaded", addHiddenClass);
+        </script>
+        <div class="user-box first-box search">
+            <form id="search-form">
+                <input type="text" id="search-input" placeholder="Search...">
+                <select id="search_criteria" name="search_criteria">
+                    <option value="name">Name</option>
+                    <option value="room_number">Room Number</option>
+                    <option value="enrollment_number">Enrollment Number</option>
+                </select>
+            </form>
+        </div>
+
+        <div id="user-container">
+            <!-- PHP code to display user information goes here -->
+            <?php
+            date_default_timezone_set('Asia/Kolkata');
+
+            // Database connection parameters
+            $servername = "sql302.infinityfree.com";
+            $username = "if0_36375033";
+            $password = "TC6VYgEIdbFI95H";
+            $dbname = "if0_36375033_hostel";
+
+            $conn = new mysqli($servername, $username, $password, $dbname);
+
+            if ($conn->connect_error) {
+                die("Connection failed: " . $conn->connect_error);
+            }
+
+            $sql = "SELECT * FROM user WHERE role = 'student' ORDER BY wing, room";
+            $result = $conn->query($sql);
+
+            $prevWing = null;
+            $prevRoom = null;
+
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    if ($row["wing"] !== $prevWing) {
+                        if ($prevWing !== null) {
+                            if ($prevRoom !== null) {
+                                echo "</div></div></div>";
+                            }
+                            echo "</div>";
+                        }
+                        echo "<div class='wing-container'><div class='custom-heading'>{$row["wing"]} Wing</div>";
+                        $prevWing = $row["wing"];
+                        $prevRoom = null;
+                    }
+
+                    if ($row["room"] !== $prevRoom) {
+                        if ($prevRoom !== null) {
+                            echo "</div></div></div>";
+                        }
+                        echo "<div class='user-box first-box'>
+                                <div class='activity card' style='--delay: .2s'>
+                                    <div class='title'>Room No: {$row["room"]}</div>
+                                    <div class='destination'>";
+                        $prevRoom = $row["room"];
+                    }
+
+                    echo "<form method='POST' action='' class='destination-card'>
+                            <div >
+                                <div class='destination-profile'>
+                                    <img class='profile-img' src='{$row['image']}' alt='' />
+                                    <div class='destination-length'>
+                                        <div class='name'>{$row["first"]} {$row["middle"]} {$row["last"]}</div>
+                                    </div>
+                                </div>
+                                <div class='destination-points'>
+                                    <div class='point'>Phone No: {$row["phone_no"]}</div>
+                                    <div class='sub-point'>Department: {$row["dept"]}</div>
+                                    <div class='sub-point enrollment-number'>Enrollment No: {$row["user_id"]}</div>
+                                </div>
+                                <div class='at'>";
+
+                    echo " </div>
+                            </div>
+                          </form>";
+                }
+
+                if ($prevRoom !== null) {
+                    echo "</div></div></div>";
+                }
+                if ($prevWing !== null) {
+                    echo "</div>";
+                }
+            } else {
+                echo "0 results";
+            }
+
+            $conn->close();
+            ?>
+        </div>
     </div>
+    <script>
+        document.getElementById('search-input').addEventListener('input', function () {
+            const searchValue = this.value.toLowerCase();
+            const searchCriteria = document.getElementById('search_criteria').value;
+            const userContainer = document.getElementById('user-container');
+            const rooms = userContainer.getElementsByClassName('user-box');
+
+            for (let i = 0; i < rooms.length; i++) {
+                const room = rooms[i];
+                const users = room.getElementsByClassName('destination-card');
+                let roomMatches = false;
+
+                for (let j = 0; j < users.length; j++) {
+                    const user = users[j];
+                    let textToSearch = '';
+
+                    if (searchCriteria === 'name') {
+                        const nameElement = user.querySelector('.name');
+                        if (nameElement) {
+                            textToSearch = nameElement.textContent.toLowerCase();
+                        }
+                    } else if (searchCriteria === 'room_number') {
+                        const titleElement = room.querySelector('.title');
+                        if (titleElement) {
+                            textToSearch = titleElement.textContent.toLowerCase();
+                        }
+                    } else if (searchCriteria === 'enrollment_number') {
+                        const enrollmentElement = user.querySelector('.enrollment-number');
+                        if (enrollmentElement) {
+                            textToSearch = enrollmentElement.textContent.toLowerCase();
+                        }
+                    }
+
+                    if (textToSearch.includes(searchValue)) {
+                        user.style.display = '';
+                        roomMatches = true;
+                    } else {
+                        user.style.display = 'none';
+                    }
+                }
+
+                if (roomMatches) {
+                    room.style.display = '';
+                } else {
+                    room.style.display = 'none';
+                }
+            }
+        });
+    </script>
 </body>
+
 </html>
