@@ -523,3 +523,102 @@ button:hover {
     margin-top: 4px;
 }
 
+.discount {
+    max-width: 320px;
+    width: 100%;
+}
+
+.discount .title {
+    margin-bottom: 30px;
+}
+
+.discount .subtitle {
+    margin-bottom: 8px;
+}
+
+.discount .subtitle-count {
+    font-size: 17px;
+    color: #17a98a;
+    font-weight: 500;
+}
+
+.discount .subtitle-count+.subtitle {
+    margin-top: 20px;
+}
+
+.discount .subtitle-count.dist {
+    color: #e85471;
+}
+
+.discount-wrapper {
+    margin-top: 15px;
+    display: flex;
+}
+
+.discount-chart {
+    margin-left: auto;
+}
+
+.discount-profile {
+    display: flex;
+    align-items: center;
+    margin-top: 40px;
+}
+
+.discount-img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    -o-object-fit: cover;
+    object-fit: cover;
+    margin: 0 16px 0 12px;
+}
+
+.discount-name {
+    font-weight: 500;
+    font-size: 15px;
+}
+
+.discount-type {
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+.circle {
+    width: 100px;
+    height: 100px;
+    border: 3px solid #5b5f78;
+    border-radius: 50%;
+    position: relative;
+}
+
+.pie {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(-90deg);
+}
+
+.pie svg circle {
+    fill: transparent;
+    stroke: #4356d6;
+    stroke-width: 14;
+    stroke-dasharray: 275;
+    stroke-dashoffset: 235;
+    -webkit-animation: pieChart 3.8s linear forwards;
+    animation: pieChart 3.8s linear forwards;
+}
+
+@-webkit-keyframes pieChart {
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes pieChart {
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
