@@ -1047,6 +1047,151 @@ $conn->close();
 
                         </select>
                     </div>
+                    <div class="field">
+                        <label>10:00 PM to 7:00 AM</label>
+                        <select id="selection" name="selection" class="select night">
+                            <option value="Null">Select</option>
+                            <?php if ($result->num_rows > 0) {
+                                $result->data_seek(0);
+                                while ($row = $result->fetch_assoc()) {
+                                    echo '<option value="' .
+                                        $row["name"] .
+                                        '">' .
+                                        $row["name"] .
+                                        "</option>";
+                                }
+                            } else {
+                                echo "0 results";
+                            } ?>
+
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <h4>B Wing</h4>
+                    <div class="field">
+                        <label>7:00 AM to 2:00 AM</label>
+                        <select id="selection" name="selection" class="select morning">
+                            <option value="Null">Select</option>
+                            <?php if ($result->num_rows > 0) {
+                                $result->data_seek(0);
+                                while ($row = $result->fetch_assoc()) {
+                                    echo '<option value="' .
+                                        $row["name"] .
+                                        '">' .
+                                        $row["name"] .
+                                        "</option>";
+                                }
+                            } else {
+                                echo "0 results";
+                            } ?>
+
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label>2:00 PM to 10:00 PM</label>
+                        <select id="selection" name="selection" class="select afternoon">
+                            <option value="Null">Select</option>
+                            <?php if ($result->num_rows > 0) {
+                                $result->data_seek(0);
+                                while ($row = $result->fetch_assoc()) {
+                                    echo '<option value="' .
+                                        $row["name"] .
+                                        '">' .
+                                        $row["name"] .
+                                        "</option>";
+                                }
+                            } else {
+                                echo "0 results";
+                            } ?>
+
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label>10:00 PM to 7:00 AM</label>
+                        <select id="selection" name="selection" class="select night">
+                            <option value="Null">Select</option>
+                            <?php if ($result->num_rows > 0) {
+                                $result->data_seek(0);
+                                while ($row = $result->fetch_assoc()) {
+                                    echo '<option value="' .
+                                        $row["name"] .
+                                        '">' .
+                                        $row["name"] .
+                                        "</option>";
+                                }
+                            } else {
+                                echo "0 results";
+                            } ?>
+
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+            <div class="day">
+                <h3>Saturday:</h3>
+                <div>
+                    <h4>A Wing</h4>
+                    <div class="field">
+                        <label>7:00 AM to 2:00 AM</label>
+                        <select id="selection" name="selection" class="select morning">
+                            <option value="Null">Select</option>
+                            <?php if ($result->num_rows > 0) {
+                                $result->data_seek(0);
+                                while ($row = $result->fetch_assoc()) {
+                                    echo '<option value="' .
+                                        $row["name"] .
+                                        '">' .
+                                        $row["name"] .
+                                        "</option>";
+                                }
+                            } else {
+                                echo "0 results";
+                            } ?>
+
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label>2:00 PM to 10:00 PM</label>
+                        <select id="selection" name="selection" class="select afternoon">
+                            <option value="Null">Select</option>
+                            <?php if ($result->num_rows > 0) {
+                                $result->data_seek(0);
+                                while ($row = $result->fetch_assoc()) {
+                                    echo '<option value="' .
+                                        $row["name"] .
+                                        '">' .
+                                        $row["name"] .
+                                        "</option>";
+                                }
+                            } else {
+                                echo "0 results";
+                            } ?>
+
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label>10:00 PM to 7:00 AM</label>
+                        <select id="selection" name="selection" class="select night">
+                            <option value="Null">Select</option>
+                            <?php if ($result->num_rows > 0) {
+                                $result->data_seek(0);
+                                while ($row = $result->fetch_assoc()) {
+                                    echo '<option value="' .
+                                        $row["name"] .
+                                        '">' .
+                                        $row["name"] .
+                                        "</option>";
+                                }
+                            } else {
+                                echo "0 results";
+                            } ?>
+
+                        </select>
+                    </div>
+                </div>
+                <div>
                 </div>
             </div>
         </form>
