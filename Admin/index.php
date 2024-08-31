@@ -594,8 +594,165 @@ $result = $conn->query($sql);
 $wingData = [];
 $totalPaid = 0;
 $totalUnpaid = 0;
+
+// Process fetched data
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $wing = $row['wing'];
+        $type = $row['type'];
+        $reason = $row['reason'];
+        $amount = $row['amount'];
+        $status = $row['status'];
+
+        // Initialize wing data if not already done
+        if (!isset($wingData[$wing])) {
+            $wingData[$wing] = [
+                'imposed' => [
+                    'hostel_fees' => 0,
+                    'reserved_fees' => 0,
+                    'other_fines' => 0,
+                    'count' => 0
+                ],
+                'paid' => [
+                    'hostel_fees' => 0,
+                    'reserved_fees' => 0,
+                    'other_fines' => 0,
+                    'count' => 0
+                ],
+                'unpaid' => [
+                    'hostel_fees' => 0,
+                    'reserved_fees' => 0,
+                    'other_fines' => 0,
+                    'count' => 0
+                ]
+            ];
+        }
+
+        // Convert $reason and $status to lowercase for case-insensitive comparison
+        $reasonLower = strtolower($reason);
+        $statusLower = strtolower($status);
+
+        // Determine fee type and update wing data accordingly
+        if ($reasonLower === 'hostel fees') {
+            if ($statusLower === 'paid') {
+                $wingData[$wing]['paid']['hostel_fees'] += $amount;
+                $wingData[$wing]['paid']['count']++;
+            } else {
+                $wingData[$wing]['unpaid']['hostel_fees'] += $amount;
+                $wingData[$wing]['unpaid']['count']++;
+            }
+            $wingData[$wing]['imposed']['hostel_fees'] += $amount;
+            $wingData[$wing]['imposed']['count']++;
+        } elseif ($reasonLower === 'hostel fees (reserved caste)') {
+            if ($statusLower === 'paid') {
+                $wingData[$wing]['paid']['reserved_fees'] += $amount;
+                $wingData[$wing]['paid']['count']++;
+            } else {
+                $wingData[$wing]['unpaid']['reserved_fees'] += $amount;
+                $wingData[$wing]['unpaid']['count']++;
+            }
+            $wingData[$wing]['imposed']['reserved_fees'] += $amount;
+            $wingData[$wing]['imposed']['count']++;
+        } else {
+            if ($statusLower === 'paid') {
+                $wingData[$wing]['paid']['other_fines'] += $amount;
+                $wingData[$wing]['paid']['count']++;
+            } else {
+                $wingData[$wing]['unpaid']['other_fines'] += $amount;
+                $wingData[$wing]['unpaid']['count']++;
+            }
+            $wingData[$wing]['imposed']['other_fines'] += $amount;
+            $wingData[$wing]['imposed']['count']++;
+        }
+
+        // Update total amounts
+        if ($statusLower === 'paid') {
+            $totalPaid += $amount;
+        } else {
+            $totalUnpaid += $amount;
+        }
+    }
+} else {
+    echo "No transactions found.";
+}
+
+$conn->close();
 ?>
+<div class="discount card" style="--delay: .4s">
+    <div class="title">Transaction</div>
+    <div class="transaction-wrapper">
+        <?php foreach ($wingData as $wing => $data) { ?>
+        <div class="transaction">
+            <div class="transaction-info">
+                <div class="transaction-type"><?php echo htmlspecialchars($wing); ?> Wing</div>
+                <h4>Imposed</h4>
+                <br>
+                <table class="transaction-table">
+                    <tr>
+                        <td>Hostel Fees</td>
+                        <td>:1100 x <span class="number"><?php echo $data['imposed']['count']; ?></span></td>
+                        <td>= <?php echo number_format($data['imposed']['hostel_fees'], 2); ?></td>
+                    </tr>
+                    <tr>
+                        <td>Hostel Fees (reserved Caste)</td>
+                        <td>:550 x <span class="number"><?php echo $data['imposed']['count']; ?></span></td>
+                        <td>= <?php echo number_format($data['imposed']['reserved_fees'], 2); ?></td>
+                    </tr>
+                    <tr>
+                        <td>Other Fines</td>
+                        <td colspan="2"><?php echo number_format($data['imposed']['other_fines'], 2); ?></td>
+                    </tr>
+                </table>
+                <br>
+                <h4>Paid</h4>
+                <br>
+                <table class="transaction-table">
+                    <tr>
+                        <td>Hostel Fees</td>
+                        <td>:1100 x <span class="number"><?php echo $data['paid']['count']; ?></span></td>
+                        <td>= <?php echo number_format($data['paid']['hostel_fees'], 2); ?></td>
+                    </tr>
+                    <tr>
+                        <td>Hostel Fees (reserved Caste)</td>
+                        <td>:550 x <span class="number"><?php echo $data['paid']['count']; ?></span></td>
+                        <td>= <?php echo number_format($data['paid']['reserved_fees'], 2); ?></td>
+                    </tr>
+                    <tr>
+                        <td>Other Fines</td>
+                        <td colspan="2"><?php echo number_format($data['paid']['other_fines'], 2); ?></td>
+                    </tr>
+                </table>
+                <br>
+                <h4>UnPaid</h4>
+                <br>
+                <table class="transaction-table">
+                    <tr>
+                        <td>Hostel Fees</td>
+                        <td>:1100 x <span class="number"><?php echo $data['unpaid']['count']; ?></span></td>
+                        <td>= <?php echo number_format($data['unpaid']['hostel_fees'], 2); ?></td>
+                    </tr>
+                    <tr>
+                        <td>Hostel Fees (reserved Caste)</td>
+                        <td>:550 x <span class="number"><?php echo $data['unpaid']['count']; ?></span></td>
+                        <td>= <?php echo number_format($data['unpaid']['reserved_fees'], 2); ?></td>
+                    </tr>
+                    <tr>
+                        <td>Other Fines</td>
+                        <td colspan="2"><?php echo number_format($data['unpaid']['other_fines'], 2); ?></td>
+                    </tr>
+                </table>
+                <br>
+            </div>
+
+        <div class="wing-summary">
+            <div class="transaction-amount is-active">Paid: <?= number_format($data['paid']['hostel_fees'] + $data['paid']['reserved_fees'] + $data['paid']['other_fines'], 2) ?></div>
+            <div class="transaction-amount is-cancel">UnPaid: <?= number_format($data['unpaid']['hostel_fees'] + $data['unpaid']['reserved_fees'] + $data['unpaid']['other_fines'], 2) ?></div>
+        </div>
+	</div>
+    </div>
+</div>
 	</div>
     </div>
 </body>
+
 </html>
