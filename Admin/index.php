@@ -905,9 +905,106 @@ if (isset($_POST['change_date'])) {
                     </div>
                 <?php endforeach; ?>
             </div>
-		</div>
+
+            <div class="custom-heading">absent Students</div>
+            <h3 class="center">A Wing</h3>
+            <div id="absentAWing" class="custom-card-info">
+                <?php foreach ($attendanceData['absentAWing'] as $user): ?>
+                    <div class="custom-destination-card ab">
+                        <div class="custom-destination-profile">
+                            <img class="custom-profile-img" src="<?php echo $user['image']; ?>" alt="">
+                            <div class="custom-destination-length">
+                                <div class="custom-name"><?php echo $user['first'] . ' ' . $user['middle'] . ' ' . $user['last']; ?></div>
+                                <div>ID: <?php echo $user['user_id']; ?></div>
+                            </div>
+                        </div>
+                        <div class="custom-destination-points">
+                            <div class="custom-sub-point">Room No: <?php echo $user['room']; ?></div>
+                            <div class="custom-sub-point">Phone No: <?php echo $user['phone_no']; ?></div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+            <h3 class="center">B Wing</h3>
+            <div id="absentBWing" class="custom-card-info">
+                <?php foreach ($attendanceData['absentBWing'] as $user): ?>
+                    <div class="custom-destination-card ab">
+                        <div class="custom-destination-profile">
+                            <img class="custom-profile-img" src="<?php echo $user['image']; ?>" alt="">
+                            <div class="custom-destination-length">
+                                <div class="custom-name"><?php echo $user['first'] . ' ' . $user['middle'] . ' ' . $user['last']; ?></div>
+                                <div>ID: <?php echo $user['user_id']; ?></div>
+                            </div>
+                        </div>
+                        <div class="custom-destination-points">
+                            <div class="custom-sub-point">Room No: <?php echo $user['room']; ?></div>
+                            <div class="custom-sub-point">Phone No: <?php echo $user['phone_no']; ?></div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+
+        </div>
+        <div class="user-box second-box">
+            <div class="cards-wrapper" style="--delay: 1s">
+                <div class="cards-header">
+                    <div class="cards-header-date">
+                        <div class="title">Notice</div>
+                    </div>
+                    <a href="https://gpphostels.rf.gd/Admin/Fine">
+                    <div class="new">
+                        New +
+                    </div>
+                    </a>
+                </div>
+                <?php
+                $conn = new mysqli($servername, $username, $password, $dbname);
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+$sql = "SELECT date, type, name, note, wing FROM Notice";
+$result = $conn->query($sql);
+?>
+
+<div class="cards card">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>From</th>
+                <th>Note</th>
+                <th>Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            if ($result->num_rows > 0) {
+                while($row = $result->fetch_assoc()) {
+                    if ($row['wing'] == 'All' || $row['wing'] == $wing) {
+                        echo "<tr>";
+                        echo "<td><span class='time'>" . $row['date'] . "</span></td>";
+                        echo "<td>" . $row['type'] . "</td>";
+                        echo "<td>" . $row['name'] . "</td>";
+                        echo "<td>" . $row['note'] . "</td>";
+                        echo "</tr>";
+                    }
+                }
+            } else {
+                echo "<tr><td colspan='4'>No notices found</td></tr>";
+            }
+            $conn->close();
+            ?>
+        </tbody>
+    </table>
 </div>
-	</div>
+            </div>
+
+        </div>
     </div>
 </body>
+
+
 </html>
