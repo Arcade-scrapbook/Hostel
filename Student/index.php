@@ -360,7 +360,113 @@ if (isset($_SESSION['role'])) {
                         </svg>
                     </div>
                 </div>
+<div class="cards card">
+                    <div class="cards-head">
+                        <div class="cards-info">
+                            <div class="degree">
+                                <span id="absentInMonth">Absent in this Month: 0</span>
+                                <span id="lateInMonth">Late in this Month: 0</span>
+                            </div>
+                        </div>
+                    </div>
 
+                    <div class="items days">
+                        <div class="item">Mon</div>
+                        <div class="item">Tue</div>
+                        <div class="item">Wed</div>
+                        <div class="item">Thu</div>
+                        <div class="item">Fri</div>
+                        <div class="item">Sat</div>
+                        <div class="item">Sun</div>
+                    </div>
+
+                    <div class="items numbers" id="calendarDays">
+                        <?php
+                        $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+                        $firstDayOfMonth = date("N", strtotime("$year-$month-01"));
+                        $lastDayOfMonth = date("N", strtotime("$year-$month-$daysInMonth"));
+                        $absentInMonth = 0;
+                        $lateInMonth = 0;
+
+                        $prevMonth = $month - 1;
+                        $prevYear = $year;
+                        if ($prevMonth == 0) {
+                            $prevMonth = 12;
+                            $prevYear--;
+                        }
+                        $daysInPrevMonth = cal_days_in_month(
+                            CAL_GREGORIAN,
+                            $prevMonth,
+                            $prevYear
+                        );
+                        for ($i = $firstDayOfMonth - 1; $i > 0; $i--) {
+                            $prevDate = $daysInPrevMonth - $i + 1;
+                            echo "<div class='item disabled'>$prevDate</div>";
+                        }
+
+                        for ($i = 1; $i <= $daysInMonth; $i++) {
+                            $date = sprintf("%d-%02d-%02d", $year, $month, $i);
+                            $class = "";
+                            $time = "";
+
+                            if (isset($attendance_data[$date])) {
+                                $status = $attendance_data[$date]["status"];
+                                $time = $attendance_data[$date]["time"];
+                                $class = $status;
+                                if ($status == "absent") {
+                                    $absentInMonth++;
+                                } elseif ($status == "late") {
+                                    $lateInMonth++;
+                                }
+                            } elseif (strtotime($date) < strtotime("today")) {
+                                $class = "absent";
+                                $absentInMonth++;
+                            }
+
+                            echo "<div class='item $class' data-date='$date' data-time='$time'>$i</div>";
+                        }
+
+                        $nextMonth = $month + 1;
+                        $nextYear = $year;
+                        if ($nextMonth == 13) {
+                            $nextMonth = 1;
+                            $nextYear++;
+                        }
+                        for ($i = 1; $i <= 7 - $lastDayOfMonth; $i++) {
+                            echo "<div class='item disabled'>$i</div>";
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
+
+            <div id="popup">
+                <div class="popup-close" id="popup-close">&times;</div>
+                <div id="popup-date" class="popup-date"></div>
+                <div id="popup-time" class="popup-time"></div>
+            </div>
+
+            <script>
+                document.getElementById('absentInMonth').innerText = "Absent in this Month: <?php echo $absentInMonth; ?>";
+                document.getElementById('lateInMonth').innerText = "Late in this Month: <?php echo $lateInMonth; ?>";
+
+                document.querySelectorAll('.item').forEach(function(item) {
+                    item.addEventListener('click', function(event) {
+                        var date = this.getAttribute('data-date');
+                        var time = this.getAttribute('data-time');
+                        var status = this.classList.contains('present') ? 'present' : this.classList.contains('late') ? 'late' : '';
+
+                        if (date && time) {
+                            var popup = document.getElementById('popup');
+                            document.getElementById('popup-date').innerText = date;
+                            document.getElementById('popup-time').innerText = `Marked ${status} at ${time}`;
+                            popup.style.display = 'block';
+                            popup.style.left = event.pageX + 'px';
+                            popup.style.top = event.pageY + 'px';
+                        }
+                    });
+                });
+            </script>
 
     </div>
 </body>
