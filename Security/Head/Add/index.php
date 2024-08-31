@@ -297,7 +297,106 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 window.location.href = '/Login';
             }
-</script>
+            document.addEventListener('DOMContentLoaded', function() {
+
+
+                var navIcon2 = document.getElementById('nav-icon2');
+
+                navIcon2.addEventListener('click', function() {
+
+                    this.classList.toggle('open');
+
+                    var elements = document.querySelectorAll('.header-link, .user-info');
+
+                    elements.forEach(function(element) {
+
+                        if (element.classList.contains('hidden')) {
+                            element.classList.remove('hidden');
+                            element.classList.add('visible');
+                        } else if (element.classList.contains('visible')) {
+                            element.classList.remove('visible');
+                            element.classList.add('hidden');
+                        } else {
+
+                            element.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+
+            function addHiddenClass() {
+                const navIcon = document.getElementById('nav-icon2');
+                console.log(window.innerWidth);
+                if (window.innerWidth < 851) {
+                    const elements = document.querySelectorAll('.header-link, .user-info');
+                    elements.forEach(element => {
+                        element.classList.add('hidden');
+                    });
+                    if (navIcon) {
+                        navIcon.style.display = 'block';
+                    }
+                } else {
+                    const elements = document.querySelectorAll('.header-link.hidden, .user-info.hidden');
+                    elements.forEach(element => {
+                        element.classList.remove('hidden');
+                    });
+                    if (navIcon) {
+                        navIcon.style.display = 'none';
+                    }
+                }
+            }
+
+            window.onload = addHiddenClass;
+
+            window.onresize = addHiddenClass;
+
+            function updateTime() {
+                var now = new Date();
+                var hours = now.getHours();
+                var minutes = now.getMinutes();
+                var ampm = hours >= 12 ? 'PM' : 'AM';
+                hours = hours % 12;
+                hours = hours ? hours : 12;
+                minutes = minutes < 10 ? '0' + minutes : minutes;
+                var currentTime = hours + ':' + minutes + ' ' + ampm;
+                document.getElementById('current-time').textContent = currentTime;
+            }
+
+            setInterval(updateTime, 1000);
+
+            window.onload = updateTime;
+
+
+            document.addEventListener("DOMContentLoaded", addHiddenClass);
+        </script>
+        <form class="user-box first-box activity card" method="POST" action="" enctype="multipart/form-data">
+            <?php if (isset($string)) {
+                echo $string;
+            } ?>
+            <h1>Add Security Data</h1>
+            <div class="field">
+                <label>First Name</label>
+                <input type="text" name="first" placeholder="First Name" class="search" required>
+            </div>
+            <div class="field">
+                <label>Last Name</label>
+                <input type="text" name="last" placeholder="Last Name" class="search" required>
+            </div>
+            <div class="field">
+                <label>Phone No:</label>
+                <input type="text" name="phone" placeholder="Phone no." class="search" required>
+            </div>
+            <div class="field">
+                <label>Password:</label>
+                <input type="password" name="password" placeholder="Password" class="search" required>
+            </div>
+            <div class="field">
+                <label>Photo:</label>
+                <input type="file" name="photo" accept="image/*" class="search" required>
+            </div>
+            <button type="submit" class="submit-button">Submit</button>
+        </form>
     </div>
 </body>
+
 </html>
