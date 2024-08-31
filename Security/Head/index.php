@@ -1501,8 +1501,199 @@ $conn->close();
 
 
                 ?>
+
+                <div class="destination">
+                    <div class="destination-card">
+                        <div class="destination-profile">
+                            <img class="profile-img" src="<?php echo ($currentEntry['image']); ?>" alt="" />
+                            <div class="destination-length">
+                                <div class="name"><?php echo ($currentEntry['name']); ?></div>
+                            </div>
+                        </div>
+                        <div class="destination-points">
+                            <div class="point"><?php echo ($currentEntry['phone']); ?></div>
+                        </div>
+                    </div>
+                    <div class="destination-card">
+                        <div class="destination-profile">
+                            <img class="profile-img" src="<?php echo ($nextEntry['image']); ?>" alt="" />
+                            <div class="destination-length">
+                                <div class="name"><?php echo ($nextEntry['name']); ?>
+                                </div>
+                                <div>Shift Changing at <?php echo date('g:i A', strtotime($nextEntry['start_time'])); ?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="destination-points">
+                            <div class="point"><?php echo ($nextEntry['phone']); ?></div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
-    </div>
+        <!--------------------------------------------------------------------------------------->
+        <div class="user-box first-box">
+            <div class="activity card user-box" style="--delay: .2s">
+                <div class="title">Boys Hostel</div>
+                <div class="activity-links">
+                    <div class="activity-link active">A Wing</div>
+                </div>
+
+                <div class="destination">
+                    <?php
+                    $conn = new mysqli($host, $username, $password, $database);
+                    if ($conn->connect_error) {
+                        die("Connection failed: " . $conn->connect_error);
+                    }
+                    $today = date("Y-m-d");
+                    $first_day_of_week = date("Y-m-d", strtotime("monday this week", strtotime($today)));
+                    $last_day_of_week = date("Y-m-d", strtotime("sunday this week", strtotime($today)));
+                    $wing = "A";
+                    $sql = "SELECT schedule.*, user.image FROM schedule JOIN user ON CONCAT(user.first, ' ', user.last) = schedule.name WHERE schedule.wing = '$wing' AND schedule.date BETWEEN '$first_day_of_week' AND '$last_day_of_week' ORDER BY schedule.date, schedule.start_time";
+
+                    $result = $conn->query($sql);
+
+                    if ($result->num_rows > 0) {
+                        $current_date = null;
+                        $card_count = 0;
+
+                        while ($row = $result->fetch_assoc()) {
+
+                            if ($row["date"] !== $current_date) {
+
+                                if ($card_count % 2 != 0) {
+                                    echo '<div class="destination-card black-card"></div>';
+                                }
+                                $card_count = 0;
+                                echo '<h3  style="display:inline-block;">' . $row["day"] . '<h5 style="display:inline-block; margin-left:10px;">[' . $row["date"] . ']</h5></h3>';
+                                $current_date = $row["date"];
+                            }
+
+                            echo '<div class="destination-card"><div class="destination-profile">';
+                            echo '<img class="profile-img" src="' . $row["image"] . '" alt="Image"/>';
+                            echo '<div class="destination-length">';
+                            echo '<div class="name">' . $row["name"] . '</div>';
+                            echo '<div>From ' . $row["start_time"] . ' Till ' . $row["end_time"] . '</div>';
+                            echo '</div></div><div class="destination-points">';
+                            echo '<div class="point">' . $row["phone"] . '</div>';
+                            echo '</div></div>';
+
+                            $card_count++;
+                        }
+
+                        if ($card_count % 2 != 0) {
+                            echo '<div class="destination-card black-card"></div>';
+                        }
+                    } else {
+                        echo "No schedule found for wing " . $wing . " for the current week";
+                    }
+                    ?>
+                </div>
+
+                <br>
+                <br>
+
+                <div class="activity-links">
+                    <div class="activity-link active">B Wing</div>
+                </div>
+                <br>
+                <div class="destination">
+                    <?php
+                    $conn = new mysqli($host, $username, $password, $database);
+                    if ($conn->connect_error) {
+                        die("Connection failed: " . $conn->connect_error);
+                    }
+                    $today = date("Y-m-d");
+                    $first_day_of_week = date("Y-m-d", strtotime("monday this week", strtotime($today)));
+                    $last_day_of_week = date("Y-m-d", strtotime("sunday this week", strtotime($today)));
+                    $wing = "B";
+                    $sql = "SELECT schedule.*, user.image FROM schedule JOIN user ON CONCAT(user.first, ' ', user.last) = schedule.name WHERE schedule.wing = '$wing' AND schedule.date BETWEEN '$first_day_of_week' AND '$last_day_of_week' ORDER BY schedule.date, schedule.start_time";
+
+                    $result = $conn->query($sql);
+
+                    if ($result->num_rows > 0) {
+                        $current_date = null;
+                        $card_count = 0;
+
+                        while ($row = $result->fetch_assoc()) {
+
+                            if ($row["date"] !== $current_date) {
+
+                                if ($card_count % 2 != 0) {
+                                    echo '<div class="destination-card black-card"></div>';
+                                }
+                                $card_count = 0;
+                                echo '<h3 style="display:inline-block;">' . $row["day"] . '<h5 style="display:inline-block; margin-left:10px;">[' . $row["date"] . ']</h5></h3>';
+                                $current_date = $row["date"];
+                            }
+
+                            
+
+                            echo '<div class="destination-card"><div class="destination-profile">';
+                            echo '<img class="profile-img" src="' . $row["image"] . '" alt="Image"/>';
+                            echo '<div class="destination-length">';
+                            echo '<div class="name">' . $row["name"] . '</div>';
+                            echo '<div>From ' . $row["start_time"] . ' Till ' . $row["end_time"] . '</div>';
+                            echo '</div></div><div class="destination-points">';
+                            echo '<div class="point">' . $row["phone"] . '</div>';
+                            echo '</div></div>';
+
+                            $card_count++;
+                        }
+
+                        if ($card_count % 2 != 0) {
+                            echo '<div class="destination-card black-card"></div>';
+                        }
+                    } else {
+                        echo "No schedule found for wing " . $wing . " for the current week";
+                    }
+                    ?>
+                </div>
+            </div>
+        </div>
 </body>
+<script>
+    function preventSameOptionInPairs(Selects) {
+        for (let i = 0; i < Selects.length; i += 2) {
+            const select1 = Selects[i];
+            const select2 = Selects[i + 1];
+
+            select1.addEventListener('change', function() {
+                const selectedValue = this.value;
+                const otherSelect = select2;
+
+                if (otherSelect.value === selectedValue) {
+                    alert('You have already selected this option in another select!');
+                    this.selectedIndex = 0;
+                }
+            });
+
+            select2.addEventListener('change', function() {
+                const selectedValue = this.value;
+                const otherSelect = select1;
+
+                if (otherSelect.value === selectedValue) {
+                    alert('You have already selected this option in another select!');
+                    this.selectedIndex = 0;
+                }
+            });
+        }
+    }
+
+    preventSameOptionInPairs(document.querySelectorAll('.morning'));
+    preventSameOptionInPairs(document.querySelectorAll('.afternoon'));
+    preventSameOptionInPairs(document.querySelectorAll('.night'));
+    document.addEventListener("DOMContentLoaded", function() {
+
+        const selects = document.querySelectorAll('select');
+
+        selects.forEach((select, index) => {
+
+            select.name = `selection${index}`;
+        });
+    });
+</script>
+<?php $dbConnection->close(); ?>
+
 </html>
