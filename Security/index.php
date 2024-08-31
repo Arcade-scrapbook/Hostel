@@ -179,7 +179,8 @@ if (isset($_SESSION['role'])) {
         }
     </style>
 </head>
-    <body class="wrapper">
+
+<body class="wrapper">
     <div class="main-container">
         <div class="header">
             <div class="top">
@@ -286,7 +287,8 @@ if (isset($_SESSION['role'])) {
                     }
                 }
             }
- window.onload = addHiddenClass;
+
+            window.onload = addHiddenClass;
 
             window.onresize = addHiddenClass;
 
@@ -381,6 +383,7 @@ if (isset($_SESSION['role'])) {
                         $prevWing = $row["wing"];
                         $prevRoom = null;
                     }
+
                     if ($row["room"] !== $prevRoom) {
                         if ($prevRoom !== null) {
                             echo "</div></div></div>";
@@ -469,6 +472,83 @@ if (isset($_SESSION['role'])) {
                             if ($conn->connect_error) {
                                 die("Connection failed: " . $conn->connect_error);
                             }
-?>
-    </body>
+
+                            $sql = "SELECT date, type, name, note, wing FROM Notice";
+                            $result = $conn->query($sql);
+                            if ($result->num_rows > 0) {
+                                while ($row = $result->fetch_assoc()) {
+                                    if ($row['wing'] == 'All' || $row['wing'] == $wing) {
+                                        echo "<tr>";
+                                        echo "<td><span class='time'>" . $row['date'] . "</span></td>";
+                                        echo "<td>" . $row['type'] . "</td>";
+                                        echo "<td>" . $row['name'] . "</td>";
+                                        echo "<td>" . $row['note'] . "</td>";
+                                        echo "</tr>";
+                                    }
+                                }
+                            } else {
+                                echo "<tr><td colspan='4'>No notices found</td></tr>";
+                            }
+                            $conn->close();
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('search-input').addEventListener('input', function() {
+            const searchValue = this.value.toLowerCase();
+            const searchCriteria = document.getElementById('search_criteria').value;
+            const userContainer = document.getElementById('user-container');
+            const rooms = userContainer.getElementsByClassName('user-box');
+
+            for (let i = 0; i < rooms.length; i++) {
+                const room = rooms[i];
+                const users = room.getElementsByClassName('destination-card');
+                let roomMatches = false;
+
+                for (let j = 0; j < users.length; j++) {
+                    const user = users[j];
+                    let textToSearch = '';
+
+                    if (searchCriteria === 'name') {
+                        const nameElement = user.querySelector('.name');
+                        if (nameElement) {
+                            textToSearch = nameElement.textContent.toLowerCase();
+                        }
+                    } else if (searchCriteria === 'room_number') {
+                        const titleElement = room.querySelector('.title');
+                        if (titleElement) {
+                            textToSearch = titleElement.textContent.toLowerCase();
+                        }
+                    } else if (searchCriteria === 'enrollment_number') {
+                        const enrollmentElement = user.querySelector('.enrollment-number');
+                        if (enrollmentElement) {
+                            textToSearch = enrollmentElement.textContent.toLowerCase();
+                        }
+                    }
+
+                    if (textToSearch.includes(searchValue)) {
+                        user.style.display = '';
+                        console.log(user);
+                        roomMatches = true;
+                    } else {
+                        user.style.display = 'none';
+                    }
+                }
+
+                if (roomMatches) {
+                    room.style.display = '';
+                } else {
+                    room.style.display = 'none';
+                }
+            }
+        });
+    </script>
+
+</body>
+
 </html>
