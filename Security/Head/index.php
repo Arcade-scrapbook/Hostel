@@ -1355,9 +1355,154 @@ $conn->close();
 
                         </select>
                     </div>
+                    <div class="field">
+                        <label>10:00 PM to 7:00 AM</label>
+                        <select id="selection" name="selection" class="select night">
+                            <option value="Null">Select</option>
+                            <?php if ($result->num_rows > 0) {
+                                $result->data_seek(0);
+                                while ($row = $result->fetch_assoc()) {
+                                    echo '<option value="' .
+                                        $row["name"] .
+                                        '">' .
+                                        $row["name"] .
+                                        "</option>";
+                                }
+                            } else {
+                                echo "0 results";
+                            } ?>
+
+                        </select>
+                    </div>
+
                 </div>
             </div>
+            <button type="submit" class="submit-button">Submit</button>
         </form>
+        <!--------------------------------------------------------------------------------------->
+        <div class="user-box first-box">
+            <div class="activity card user-box" style="--delay: .2s">
+                <div class="title">Boys Hostel</div>
+                <div class="activity-links">
+                    <div class="activity-link active">A Wing</div>
+                </div>
+                <?php
+                date_default_timezone_set('Asia/Kolkata');
+
+                $currentDate = date('Y-m-d');
+                $currentTime = date('H:i');
+                $currentDay = date('l');
+
+                $conn = new mysqli($host, $username, $password, $database);
+
+                $query = "SELECT schedule.*, user.image FROM schedule JOIN user ON CONCAT(user.first, ' ', user.last) = schedule.name WHERE schedule.date = '$currentDate' AND schedule.wing = 'A'";
+                $result = $conn->query($query);
+
+                $currentEntry = null;
+
+                while ($row = $result->fetch_assoc()) {
+                    $startTime = $row['start_time'];
+                    $endTime = $row['end_time'];
+
+                    $startTimeObj = new DateTime($startTime);
+                    $endTimeObj = new DateTime($endTime);
+                    $currentTimeObj = new DateTime($currentTime);
+
+                    if ($startTime > $endTime) {
+                        if ($currentTime >= $startTime || $currentTime < $endTime) {
+                            $currentEntry = $row;
+                            break;
+                        }
+                    } else {
+                        if ($currentTime >= $startTime && $currentTime < $endTime) {
+                            $currentEntry = $row;
+                            break;
+                        }
+                    }
+                }
+
+                if (!$currentEntry) {
+                    echo "No current entry found.";
+                }
+                $nextEntry = null;
+                $nextEntry = $result->fetch_assoc();
+                if (!$nextEntry) {
+                    echo "No current entry found.";
+                }
+
+                ?>
+
+                <div class="destination">
+                    <div class="destination-card">
+                        <div class="destination-profile">
+                            <img class="profile-img" src="<?php echo ($currentEntry['image']); ?>" alt="" />
+                            <div class="destination-length">
+                                <div class="name"><?php echo ($currentEntry['name']); ?></div>
+                            </div>
+                        </div>
+                        <div class="destination-points">
+                            <div class="point"><?php echo ($currentEntry['phone']); ?></div>
+                        </div>
+                    </div>
+                    <div class="destination-card">
+                        <div class="destination-profile">
+                            <img class="profile-img" src="<?php echo ($nextEntry['image']); ?>" alt="" />
+                            <div class="destination-length">
+                                <div class="name"><?php echo ($nextEntry['name']); ?>
+                                </div>
+                                <div>Shift Changing at <?php echo date('g:i A', strtotime($nextEntry['start_time'])); ?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="destination-points">
+                            <div class="point"><?php echo ($nextEntry['phone']); ?></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="activity-links">
+                    <div class="activity-link active">B Wing</div>
+                </div>
+                <?php
+                $query = "SELECT schedule.*, user.image FROM schedule JOIN user ON CONCAT(user.first, ' ', user.last) = schedule.name WHERE schedule.date = '$currentDate' AND schedule.wing = 'B'";
+                $result = $conn->query($query);
+
+                $currentEntry = null;
+
+                while ($row = $result->fetch_assoc()) {
+                    $startTime = $row['start_time'];
+                    $endTime = $row['end_time'];
+
+                    $startTimeObj = new DateTime($startTime);
+                    $endTimeObj = new DateTime($endTime);
+                    $currentTimeObj = new DateTime($currentTime);
+
+                    if ($startTime > $endTime) {
+                        if ($currentTime >= $startTime || $currentTime < $endTime) {
+                            $currentEntry = $row;
+                            break;
+                        }
+                    } else {
+                        if ($currentTime >= $startTime && $currentTime < $endTime) {
+                            $currentEntry = $row;
+                            break;
+                        }
+                    }
+                }
+
+                if (!$currentEntry) {
+                    echo "No current entry found.";
+                }
+                $nextEntry = null;
+                $nextEntry = $result->fetch_assoc();
+
+                if (!$nextEntry) {
+                    echo "No current entry found.";
+                }
+
+
+                ?>
+            </div>
+        </div>
     </div>
 </body>
 </html>
