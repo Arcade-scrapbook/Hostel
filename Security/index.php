@@ -381,6 +381,94 @@ if (isset($_SESSION['role'])) {
                         $prevWing = $row["wing"];
                         $prevRoom = null;
                     }
-                        ?>
+                    if ($row["room"] !== $prevRoom) {
+                        if ($prevRoom !== null) {
+                            echo "</div></div></div>";
+                        }
+                        echo "<div class='user-box first-box'>
+                                <div class='activity card' style='--delay: .2s'>
+                                    <div class='title'>Room No: {$row["room"]}</div>
+                                    <div class='destination'>";
+                        $prevRoom = $row["room"];
+                    }
+
+                    $enrollment_no = $row["user_id"];
+                    $date = date("Y-m-d");
+                    $check_sql = "SELECT status FROM attendance WHERE user_id = ? AND date = ?";
+                    $check_stmt = $conn->prepare($check_sql);
+                    $check_stmt->bind_param("ss", $enrollment_no, $date);
+                    $check_stmt->execute();
+                    $check_stmt->store_result();
+                    $marked = $check_stmt->num_rows > 0;
+                    $check_stmt->bind_result($status);
+                    $check_stmt->fetch();
+                    $check_stmt->close();
+
+                    echo "<form method='POST' action=''>
+                            <div class='destination-card'>
+                                <div class='destination-profile'>
+                                    <img class='profile-img' src='{$row["image"]}' alt='' />
+                                    <div class='destination-length'>
+                                        <div class='name'>{$row["first"]} {$row["middle"]} {$row["last"]}</div>
+                                    </div>
+                                </div>
+                                <div class='destination-points'>
+                                    <div class='point'>Phone No: {$row["phone_no"]}</div>
+                                    <div class='sub-point'>Department: {$row["dept"]}</div>
+                                    <div class='sub-point enrollment-number'>Enrollment No: {$row["user_id"]}</div>
+                                </div>
+                                <div class='at'>";
+
+                    if ($marked && ($status == "present" || $status == "late")) {
+                        echo "<div>Marked as $status</div>";
+                    } else {
+                        echo "<input type='hidden' name='enrollment_no' value='{$row["user_id"]}'>
+                              <button type='submit' name='mark_present'>Present</button>";
+                    }
+
+                    echo " </div>
+                            </div>
+                          </form>";
+                }
+
+                if ($prevRoom !== null) {
+                    echo "</div></div></div>";
+                }
+                if ($prevWing !== null) {
+                    echo "</div>";
+                }
+            } else {
+                echo "0 results";
+            }
+
+            $conn->close();
+            ?>
+        </div>
+
+        <div class="user-box second-box">
+            <div class="cards-wrapper" style="--delay: 1s">
+                <div class="cards-header">
+                    <div class="cards-header-date">
+                        <div class="title">Notice</div>
+                    </div>
+                </div>
+                <div class="cards card">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>From</th>
+                                <th>Note</th>
+                                <th>Type</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $conn = new mysqli($host, $username, $password, $database);
+
+                            if ($conn->connect_error) {
+                                die("Connection failed: " . $conn->connect_error);
+                            }
+?>
     </body>
 </html>
