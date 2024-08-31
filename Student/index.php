@@ -84,6 +84,113 @@ if (isset($_SESSION['role'])) {
                 <div class="hour" id="current-time">08.20 pm</div>
             </div>
         </div>
+        <script>
+            function logout() {
+                localStorage.clear();
+                sessionStorage.clear();
+
+                document.cookie.split(';').forEach(function(cookie) {
+                    var cookieName = cookie.split('=')[0].trim();
+                    document.cookie = cookieName + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+                });
+
+                window.location.href = '/Login';
+            }
+            document.addEventListener('DOMContentLoaded', function() {
+
+
+                var navIcon2 = document.getElementById('nav-icon2');
+
+                navIcon2.addEventListener('click', function() {
+
+                    this.classList.toggle('open');
+
+                    var elements = document.querySelectorAll('.header-link, .user-info');
+
+                    elements.forEach(function(element) {
+
+                        if (element.classList.contains('hidden')) {
+                            element.classList.remove('hidden');
+                            element.classList.add('visible');
+                        } else if (element.classList.contains('visible')) {
+                            element.classList.remove('visible');
+                            element.classList.add('hidden');
+                        } else {
+
+                            element.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+
+            function addHiddenClass() {
+                const navIcon = document.getElementById('nav-icon2');
+                console.log(window.innerWidth);
+                if (window.innerWidth < 851) {
+                    const elements = document.querySelectorAll('.header-link, .user-info');
+                    elements.forEach(element => {
+                        element.classList.add('hidden');
+                    });
+                    if (navIcon) {
+                        navIcon.style.display = 'block';
+                    }
+                } else {
+                    const elements = document.querySelectorAll('.header-link.hidden, .user-info.hidden');
+                    elements.forEach(element => {
+                        element.classList.remove('hidden');
+                    });
+                    if (navIcon) {
+                        navIcon.style.display = 'none';
+                    }
+                }
+            }
+
+            window.onload = addHiddenClass;
+
+            window.onresize = addHiddenClass;
+
+            function updateTime() {
+                var now = new Date();
+                var hours = now.getHours();
+                var minutes = now.getMinutes();
+                var ampm = hours >= 12 ? 'PM' : 'AM';
+                hours = hours % 12;
+                hours = hours ? hours : 12;
+                minutes = minutes < 10 ? '0' + minutes : minutes;
+                var currentTime = hours + ':' + minutes + ' ' + ampm;
+                document.getElementById('current-time').textContent = currentTime;
+            }
+
+            setInterval(updateTime, 1000);
+
+            window.onload = updateTime;
+
+            function setMarginLeftToZero() {
+                if (window.innerWidth < 850) {
+
+                    const cardElements = document.querySelectorAll('.card');
+
+                    const userBoxElements = document.querySelectorAll('.user-box');
+
+                    const wrapperElements = document.querySelectorAll('[class*="-wrapper"]');
+
+                    const allSelectedElements = [...cardElements, ...userBoxElements, ...wrapperElements];
+
+                    allSelectedElements.forEach(element => {
+                        element.style.marginLeft = '0';
+                    });
+                } else {
+
+                    const resetElements = document.querySelectorAll('.card, .user-box, [class*="-wrapper"]');
+                    resetElements.forEach(element => {
+                        element.style.marginLeft = '';
+                    });
+                }
+            }
+            setMarginLeftToZero();
+            document.addEventListener("DOMContentLoaded", setMarginLeftToZero);
+            window.addEventListener("resize", setMarginLeftToZero);
+        </script>
     </div>
 </body>
 </html>
