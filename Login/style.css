@@ -1,0 +1,93 @@
+:root {
+    --candy-start: #009fff;
+    --candy-stop: #ec2f4b;
+    --candy-bg-color: #00293d;
+    --candy-color: rgba(255, 255, 255, 0.8);
+    --candy-submit-icon-color: #fff;
+    --candy-input-bg-color: rgba(0, 0, 0, 0.4);
+    --candy-input-icon-color: rgba(255, 255, 255, 0.3);
+    --candy-input-focus-icon-color: #24b7ff;
+    --candy-input-focus-bg-color: rgba(0, 0, 0, 0.5);
+    --candy-placeholder-color: rgba(255, 255, 255, 0.7);
+    --candy-submit-color: #fff;
+    --bg-color: var(--candy-bg-color);
+    --color: var(--candy-color);
+    --start: var(--candy-start);
+    --stop: var(--candy-stop);
+    --submit-icon-color: var(--candy-submit-icon);
+    --input-bg-color: var(--candy-input-bg-color);
+    --input-icon-color: var(--candy-input-icon-color);
+    --input-focus-icon-color: var(--candy-input-focus-icon-color);
+    --input-focus-bg-color: var(--candy-input-focus-bg-color);
+    --placeholder-color: var(--candy-placeholder-color);
+    --submit-color: var(--candy-submit-color);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--color);
+    display: flex;
+    flex-direction: column;
+    font-family: 'Poppins', sans-serif;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 300ms ease-in-out;
+}
+
+form {
+    background: linear-gradient(225deg, var(--start) 16%, var(--stop) 100%);
+    border-radius: 8px;
+    padding: 20px 30px;
+    text-align: center;
+    width: 375px;
+    transform-style: preserve-3d;
+    transition: transform 1200ms ease;
+}
+
+form.rotate {
+    animation: rotate 1200ms ease forwards;
+    /* Changed to simplify */
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate3d(0, 0, 0, 0);
+    }
+
+    100% {
+        transform: rotate3d(0, 1, 0, 360deg);
+    }
+}
+
+form i {
+    color: var(--submit-icon-color);
+    font-size: 30px;
+    transition: color 250ms ease-in;
+}
+
+form .input-wrapper {
+    margin-bottom: 15px;
+    position: relative;
+    transform: translateZ(50px);
+}
+
+form .input-wrapper i {
+    color: var(--input-icon-color);
+    position: absolute;
+    right: 13px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+form h1 {
+    font-size: 26px;
+    font-weight: 600;
+    letter-spacing: 0;
+    margin: 25px 0 0 0;
+    transform: translateZ(50px);
+}
