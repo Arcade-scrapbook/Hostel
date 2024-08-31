@@ -748,11 +748,166 @@ $conn->close();
             <div class="transaction-amount is-active">Paid: <?= number_format($data['paid']['hostel_fees'] + $data['paid']['reserved_fees'] + $data['paid']['other_fines'], 2) ?></div>
             <div class="transaction-amount is-cancel">UnPaid: <?= number_format($data['unpaid']['hostel_fees'] + $data['unpaid']['reserved_fees'] + $data['unpaid']['other_fines'], 2) ?></div>
         </div>
-	</div>
+
+
+        </div>
+        <?php } ?>
     </div>
+    <div class="discount-wrapper">
+        <div class="discount-info">
+            <div class="subtitle">Paid Payment:</div>
+            <div class="subtitle-count">₹<?= number_format($totalPaid, 2) ?></div>
+            <div class="subtitle">Pending Payment:</div>
+            <div class="subtitle-count">₹<?= number_format($totalUnpaid, 2) ?></div>
+        </div>
+    </div>
+</div>
+<?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+$host = "sql302.infinityfree.com";
+$username = "if0_36375033";
+$password = "TC6VYgEIdbFI95H";
+$dbname = "if0_36375033_hostel";
+
+$conn = new mysqli($host, $username, $password, $dbname);
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Function to get attendance data
+function getAttendanceData($date) {
+    global $conn;
+    $data = [
+        'lateAWing' => [],
+        'lateBWing' => [],
+        'absentAWing' => [],
+        'absentBWing' => []
+    ];
+
+    // Get users' data
+    $usersQuery = "SELECT * FROM user";
+    $usersResult = $conn->query($usersQuery);
+
+    if ($usersResult->num_rows > 0) {
+        while ($user = $usersResult->fetch_assoc()) {
+            $userId = $user['user_id'];
+            $attendanceQuery = "SELECT * FROM attendance WHERE user_id='$userId' AND date='$date'";
+            $attendanceResult = $conn->query($attendanceQuery);
+
+            if ($attendanceResult->num_rows > 0) {
+                $attendance = $attendanceResult->fetch_assoc();
+                $status = $attendance['status'];
+                $time = $attendance['time'];
+
+                if ($status == 'late') {
+                    $user['status'] = 'late';
+                    $user['time'] = $time;
+                    if ($user['wing'] == 'A') {
+                        $data['lateAWing'][] = $user;
+                    } else {
+                        $data['lateBWing'][] = $user;
+                    }
+                } else {
+                    // Do not display present users
+                    continue;
+                }
+            } else {
+                $currentTime = date('H:i:s');
+                
+                    $user['status'] = 'absent';
+                    if ($user['wing'] == 'A') {
+                        $data['absentAWing'][] = $user;
+                    } else {
+                        $data['absentBWing'][] = $user;
+                    }
+                
+            }
+        }
+    }
+
+    return $data;
+}
+
+// Get date from form or use today's date for initial load
+$date = isset($_POST['date']) ? $_POST['date'] : date('Y-m-d');
+$attendanceData = getAttendanceData($date);
+
+// Update the date based on form input for next/previous day
+if (isset($_POST['change_date'])) {
+    $change_date = intval($_POST['change_date']);
+    $date = date('Y-m-d', strtotime("$date $change_date day"));
+    $attendanceData = getAttendanceData($date);
+}
+?>
+<div class="cards-wrapper" style="--delay: .6s">
+                <form class="cards-header" method="POST">
+                    <div class="cards-header-date">
+                    <button type="submit" name="change_date" value="-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="feather feather-chevron-left" type="submit" name="change_date" value="-1">
+                            <path d="M15 18l-6-6 6-6" />
+                        </svg>
+                        </button>
+                        <div class="title" id="dateTitle"><?php echo date('F j, Y', strtotime($date)); ?></div>
+                        <button type="submit" name="change_date" value="1">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="feather feather-chevron-right">
+                            <path d="M9 18l6-6-6-6" />
+                        </svg>
+                        </button>
+                    </div>
+                     <input type="hidden" name="date" value="<?php echo $date; ?>">
+                </form>
+                
+                <div class="cards card">
+                
+            <div class="custom-heading">late Arrived Students</div>
+            <h3 class="center">A Wing</h3>
+            <div id="lateAWing" class="custom-card-info">
+                <?php foreach ($attendanceData['lateAWing'] as $user): ?>
+                    <div class="custom-destination-card late">
+                        <div class="custom-destination-profile">
+                            <img class="custom-profile-img" src="<?php echo $user['image']; ?>" alt="">
+                            <div class="custom-destination-length">
+                                <div class="custom-name"><?php echo $user['first'] . ' ' . $user['middle'] . ' ' . $user['last']; ?></div>
+                                <div>ID: <?php echo $user['user_id']; ?></div>
+                            </div>
+                        </div>
+                        <div class="custom-destination-points">
+                            <div class="custom-sub-point">Room No: <?php echo $user['room']; ?></div>
+                            <div class="custom-sub-point">Phone No: <?php echo $user['phone_no']; ?></div>
+                            <div class="custom-sub-point">Arrived at: <?php echo $user['time']; ?></div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+            <h3 class="center">B Wing</h3>
+            <div id="lateBWing" class="custom-card-info">
+                <?php foreach ($attendanceData['lateBWing'] as $user): ?>
+                    <div class="custom-destination-card late">
+                        <div class="custom-destination-profile">
+                            <img class="custom-profile-img" src="<?php echo $user['image']; ?>" alt="">
+                            <div class="custom-destination-length">
+                                <div class="custom-name"><?php echo $user['first'] . ' ' . $user['middle'] . ' ' . $user['last']; ?></div>
+                                <div>ID: <?php echo $user['user_id']; ?></div>
+                            </div>
+                        </div>
+                        <div class="custom-destination-points">
+                            <div class="custom-sub-point">Room No: <?php echo $user['room']; ?></div>
+                            <div class="custom-sub-point">Phone No: <?php echo $user['phone_no']; ?></div>
+                            <div class="custom-sub-point">Arrived at: <?php echo $user['time']; ?></div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+		</div>
 </div>
 	</div>
     </div>
 </body>
-
 </html>
