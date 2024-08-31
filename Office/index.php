@@ -296,7 +296,182 @@ if (isset($_SESSION['role'])) {
 
                 window.location.href = '/Login';
             }
-</script>
+            document.addEventListener('DOMContentLoaded', function() {
+
+
+                var navIcon2 = document.getElementById('nav-icon2');
+
+                navIcon2.addEventListener('click', function() {
+
+                    this.classList.toggle('open');
+
+                    var elements = document.querySelectorAll('.header-link, .user-info');
+
+                    elements.forEach(function(element) {
+
+                        if (element.classList.contains('hidden')) {
+                            element.classList.remove('hidden');
+                            element.classList.add('visible');
+                        } else if (element.classList.contains('visible')) {
+                            element.classList.remove('visible');
+                            element.classList.add('hidden');
+                        } else {
+
+                            element.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+
+            function addHiddenClass() {
+                const navIcon = document.getElementById('nav-icon2');
+                console.log(window.innerWidth);
+                if (window.innerWidth < 851) {
+                    const elements = document.querySelectorAll('.header-link, .user-info');
+                    elements.forEach(element => {
+                        element.classList.add('hidden');
+                    });
+                    if (navIcon) {
+                        navIcon.style.display = 'block';
+                    }
+                } else {
+                    const elements = document.querySelectorAll('.header-link.hidden, .user-info.hidden');
+                    elements.forEach(element => {
+                        element.classList.remove('hidden');
+                    });
+                    if (navIcon) {
+                        navIcon.style.display = 'none';
+                    }
+                }
+            }
+
+            window.onload = addHiddenClass;
+
+            window.onresize = addHiddenClass;
+
+            function updateTime() {
+                var now = new Date();
+                var hours = now.getHours();
+                var minutes = now.getMinutes();
+                var ampm = hours >= 12 ? 'PM' : 'AM';
+                hours = hours % 12;
+                hours = hours ? hours : 12;
+                minutes = minutes < 10 ? '0' + minutes : minutes;
+                var currentTime = hours + ':' + minutes + ' ' + ampm;
+                document.getElementById('current-time').textContent = currentTime;
+            }
+
+            setInterval(updateTime, 1000);
+
+            window.onload = updateTime;
+
+
+            document.addEventListener("DOMContentLoaded", addHiddenClass);
+        </script>
+
+        <?php
+        // Database connection
+        ini_set('display_errors', 1);
+        ini_set('display_startup_errors', 1);
+        error_reporting(E_ALL);
+
+        $servername = "sql302.infinityfree.com";
+        $username = "if0_36375033";
+        $password = "TC6VYgEIdbFI95H";
+        $dbname = "if0_36375033_hostel";
+
+        // Display errors for debugging
+        $conn = new mysqli($servername, $username, $password, $dbname);
+
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
+
+        // Handle form submission
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['enrollment_number']) && isset($_POST['paymentType'])) {
+            $enrollment_number = $_POST['enrollment_number'];
+            $paymentType = $_POST['paymentType'];
+            $amount = $_POST['amount'];
+
+            $sql = "UPDATE transaction SET status = 'Paid', method = ? WHERE enrollment_number = ? AND amount=? AND LOWER(status) = 'unpaid' ";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('sss', $paymentType, $enrollment_number, $amount);
+
+            if ($stmt->execute()) {
+                echo "<p>Transaction updated successfully</p>";
+            } else {
+                echo "<p>Error updating transaction: " . $conn->error . "</p>";
+            }
+
+            $stmt->close();
+        }
+
+        // Fetch data from transaction table and order by status to show unpaid first
+        $sql = "SELECT t.enrollment_number, t.amount, t.reason, t.status, t.method, u.first, u.middle, u.last 
+                FROM transaction t
+                JOIN user u ON t.enrollment_number = u.user_id
+                ORDER BY CASE WHEN LOWER(t.status) = 'unpaid' THEN 0 ELSE 1 END, t.status";
+        $result = $conn->query($sql);
+        ?>
+
+        <div class="user-box first-box search">
+            <form id="search-form">
+                <input type="text" id="search-input" placeholder="Enrollment Number">
+            </form>
+        </div>
+
+        <div class="user-box second-box">
+            <div class="card transection" style="--delay: .2s">
+                <div class="credit-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Enrollment no</th>
+                                <th>Reason</th>
+                                <th>Status</th>
+                                <th>Amount</th>
+                                <th>Method</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="transaction-table">
+                            <?php
+                            if ($result->num_rows > 0) {
+                                while ($row = $result->fetch_assoc()) {
+                                    $fullName = $row['first'] . ' ' . $row['middle'] . ' ' . $row['last'];
+                                    if (strcasecmp($row['status'], 'Unpaid') == 0) {
+                                        echo "<tr>
+                                            <td class='credit-name'>{$fullName}</td>
+                                            <td class='credit-name'>{$row['enrollment_number']}</td>
+                                            <td class='credit-name'>{$row['reason']}</td>
+                                            <td class='credit-name'>{$row['status']}</td>
+                                            <td class='credit-name'>{$row['amount']}</td>
+                                            <form method='POST' action=''>
+                                            <td>
+                                                <select name='paymentMethod' class='select' required onchange='handlePaymentMethodChange(this)'>
+                                                    <option value='' disabled selected>Select Method</option>
+                                                    <option value='Cash'>Cash</option>
+                                                    <option value='UPI'>UPI</option>
+                                                </select>
+                                                <input type='text' name='transactionId' placeholder='Transaction ID' class='search hidden' required>
+                                                <input type='hidden' name='paymentType'>
+                                                <input type='hidden' name='enrollment_number' value='{$row['enrollment_number']}'>
+                                                <input type='hidden' name='amount' value='{$row['amount']}'>
+                                            </td>
+                                            <td>
+                                                <button type='submit' class='credit-name d'>Mark as Paid</button>
+                                            </td>
+                                            </form>
+                                        </tr>";
+                                    } 
+                                ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 </html>
+                                    
