@@ -1295,3 +1295,66 @@ button:hover {
         overflow-y: auto;
     }
 }
+
+@media screen and (max-width: 520px) {
+    .destination {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+}
+
+.user-box>* {
+    -webkit-animation: top 1s var(--delay) both;
+    animation: top 1s var(--delay) both;
+}
+@media screen and (min-width: 1020px) {
+    #tran{
+        padding-top:0 !important;
+    }
+}
+ #popup {
+        display: none;
+        position: absolute;
+        background-color: white;
+        border: 1px solid black;
+        padding: 20px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        z-index: 1000;
+        text-align: center;
+        max-width: 200px;
+    }
+
+    .popup-date {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .popup-time {
+        color: gray;
+        margin-bottom: 10px;
+    }
+
+    .popup-close {
+        cursor: pointer;
+        font-size: 16px;
+        color: red;
+        position: absolute;
+        top: 5px;
+        right: 10px;
+    }
+    .late, .present{
+        cursor:pointer;
+    }
+    .degree{
+        flex-direction:column;
+        align-items:left;
+
+    }
+    #lateInMonth{
+        margin-top:10px;
+    }
+    .disabled{
+        font-size:10px;
+    }
