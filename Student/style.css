@@ -622,3 +622,102 @@ button:hover {
         stroke-dashoffset: 0;
     }
 }
+
+.counter {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    color: #3e50c5;
+    font-weight: 500;
+}
+
+.offer-button {
+    background: #4255d4;
+    padding: 14px;
+    text-align: center;
+    justify-content: center;
+    margin-top: auto;
+    margin-right: 0;
+    color: #fff;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.cards-header {
+    background: #10122b;
+    border-radius: 6px 6px 0 0;
+    padding: 20px 45px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.in-header {
+    background: #10122b;
+    border-radius: 6px 6px 0 0;
+    padding: 20px 45px;
+    font-size: 14px;
+    font-weight: 500;
+    width: 100% !important;
+    display: flex;
+    flex-direction: row;
+}
+
+.cards-header-date {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.cards-header-date svg {
+    color: #4154d1;
+    background: #14183c;
+    border-radius: 50%;
+    padding: 5px;
+    width: 30px;
+}
+
+.cards-wrapper {
+    margin-left: 20px;
+    max-width: 305px;
+    width: 100%;
+}
+
+.cards-hour {
+    font-size: 26px;
+}
+
+.cards-hour .am-pm {
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.cards.card {
+    border-radius: 0 0 6px 6px;
+    padding: 30px 20px;
+}
+
+.cards.card svg {
+    width: 24px;
+    margin-left: auto;
+    color: #818394;
+}
+
+.cards-head {
+    display: flex;
+    align-items: center;
+}
+
+.degree {
+    margin-top: 10px;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    color: #818394;
+    font-weight: 500;
+}
+
+.degree svg {
+    width: 24px;
+    margin-right: 12px;
+}
