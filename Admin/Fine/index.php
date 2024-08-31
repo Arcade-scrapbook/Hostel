@@ -445,8 +445,67 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <option value="B">B Wing</option>
                     </select>
                 </div>
+
+                <div id="year-section" class="field" style="display:none;">
+                    <label for="year">Select Year:</label>
+                    <select name="year" id="year" class="select">
+                        <option value="first">First Year</option>
+                        <option value="second">Second Year</option>
+                        <option value="third">Third Year</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label for="fine-amount">Fine Amount:</label>
+                    <input type="text" name="fine-amount" id="fine-amount" class="search" placeholder="Enter fine amount">
+                </div>
+
+                <div class="field">
+                    <label for="reason">Reason:</label>
+                    <textarea name="reason" id="reason" class="search" placeholder="Enter reason for fine" rows="4" cols="30"></textarea>
+                </div>
+
+                <button type="submit" class="submit-button">Submit</button>
             </form>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            function updateForm() {
+                var selectOption = document.getElementById("select-option").value;
+                var enrollmentSection = document.getElementById("enrollment-section");
+                var wingSection = document.getElementById("wing-section");
+                var yearSection = document.getElementById("year-section");
+
+                enrollmentSection.style.display = "none";
+                wingSection.style.display = "none";
+                yearSection.style.display = "none";
+
+                if (selectOption === "enrollment") {
+                    enrollmentSection.style.display = "flex";
+                } else if (selectOption === "wing") {
+                    wingSection.style.display = "flex";
+                } else if (selectOption === "year") {
+                    wingSection.style.display = "flex";
+                    yearSection.style.display = "flex";
+                }
+            }
+
+            document.getElementById("select-option").addEventListener("change", updateForm);
+
+            // Initialize the form display based on the default selection
+            updateForm();
+        });
+    </script>
+    <?php
+    if ($message != '') {
+        echo "<script>alert('$message');</script>";
+    }
+    if (!empty($errorMessages)) {
+        foreach ($errorMessages as $errorMessage) {
+            echo "<script>alert('$errorMessage');</script>";
+        }
+    }
+    ?>
 </body>
 </html>
