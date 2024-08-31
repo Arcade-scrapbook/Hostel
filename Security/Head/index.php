@@ -447,7 +447,172 @@ $conn->close();
                     });
                 });
             });
-</script>
+
+            function addHiddenClass() {
+                const navIcon = document.getElementById('nav-icon2');
+                console.log(window.innerWidth);
+                if (window.innerWidth < 851) {
+                    const elements = document.querySelectorAll('.header-link, .user-info');
+                    elements.forEach(element => {
+                        element.classList.add('hidden');
+                    });
+                    if (navIcon) {
+                        navIcon.style.display = 'block';
+                    }
+                } else {
+                    const elements = document.querySelectorAll('.header-link.hidden, .user-info.hidden');
+                    elements.forEach(element => {
+                        element.classList.remove('hidden');
+                    });
+                    if (navIcon) {
+                        navIcon.style.display = 'none';
+                    }
+                }
+            }
+
+            window.onload = addHiddenClass;
+
+            window.onresize = addHiddenClass;
+
+            function updateTime() {
+                var now = new Date();
+                var hours = now.getHours();
+                var minutes = now.getMinutes();
+                var ampm = hours >= 12 ? 'PM' : 'AM';
+                hours = hours % 12;
+                hours = hours ? hours : 12;
+                minutes = minutes < 10 ? '0' + minutes : minutes;
+                var currentTime = hours + ':' + minutes + ' ' + ampm;
+                document.getElementById('current-time').textContent = currentTime;
+            }
+
+            setInterval(updateTime, 1000);
+
+            window.onload = updateTime;
+
+
+            document.addEventListener("DOMContentLoaded", addHiddenClass);
+        </script>
+        <form class="user-box first-box activity card" action="" method="post">
+            <p>
+                <?php
+                echo $string;
+                $dbConnection = new mysqli($host, $username, $password, $database);
+
+                if ($dbConnection->connect_error) {
+                    die("Connection failed: " . $dbConnection->connect_error);
+                }
+
+                $sql = "SELECT CONCAT(first, ' ', last) AS name FROM user WHERE role = 'security'";
+                $result = $dbConnection->query($sql);
+                ?>
+            </p>
+            <h1>Week Schedule</h1>
+
+            <div class="day">
+                <h3>Monday:</h3>
+                <div>
+                    <h4>A Wing</h4>
+                    <div class="field">
+                        <label>7:00 AM to 2:00 AM</label>
+                        <select id="selection" name="selection" class="select morning">
+                            <option value="Null">Select</option>
+                            <?php if ($result->num_rows > 0) {
+                                $result->data_seek(0);
+                                while ($row = $result->fetch_assoc()) {
+                                    echo '<option value="' .
+                                        $row["name"] .
+                                        '">' .
+                                        $row["name"] .
+                                        "</option>";
+                                }
+                            } else {
+                                echo "0 results";
+                            } ?>
+
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label>2:00 PM to 10:00 PM</label>
+                        <select id="selection" name="selection" class="select afternoon">
+                            <option value="Null">Select</option>
+                            <?php if ($result->num_rows > 0) {
+                                $result->data_seek(0);
+                                while ($row = $result->fetch_assoc()) {
+                                    echo '<option value="' .
+                                        $row["name"] .
+                                        '">' .
+                                        $row["name"] .
+                                        "</option>";
+                                }
+                            } else {
+                                echo "0 results";
+                            } ?>
+
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label>10:00 PM to 7:00 AM</label>
+                        <select id="selection" name="selection" class="select night">
+                            <option value="Null">Select</option>
+                            <?php if ($result->num_rows > 0) {
+                                $result->data_seek(0);
+                                while ($row = $result->fetch_assoc()) {
+                                    echo '<option value="' .
+                                        $row["name"] .
+                                        '">' .
+                                        $row["name"] .
+                                        "</option>";
+                                }
+                            } else {
+                                echo "0 results";
+                            } ?>
+
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <h4>B Wing</h4>
+                    <div class="field">
+                        <label>7:00 AM to 2:00 AM</label>
+                        <select id="selection" name="selection" class="select morning">
+                            <option value="Null">Select</option>
+                            <?php if ($result->num_rows > 0) {
+                                $result->data_seek(0);
+                                while ($row = $result->fetch_assoc()) {
+                                    echo '<option value="' .
+                                        $row["name"] .
+                                        '">' .
+                                        $row["name"] .
+                                        "</option>";
+                                }
+                            } else {
+                                echo "0 results";
+                            } ?>
+
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label>2:00 PM to 10:00 PM</label>
+                        <select id="selection" name="selection" class="select afternoon">
+                            <option value="Null">Select</option>
+                            <?php if ($result->num_rows > 0) {
+                                $result->data_seek(0);
+                                while ($row = $result->fetch_assoc()) {
+                                    echo '<option value="' .
+                                        $row["name"] .
+                                        '">' .
+                                        $row["name"] .
+                                        "</option>";
+                                }
+                            } else {
+                                echo "0 results";
+                            } ?>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
 </body>
 </html>
