@@ -504,3 +504,83 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6, p, .navbar, .brand, a, .td
     opacity: 1;
     filter: alpha(opacity=100);
   }
+
+  .btn-warning:hover, .btn-warning:focus, .btn-warning:active, .btn-warning.active, .show > .btn-warning.dropdown-toggle {
+    background-color: #fab526;
+    color: #FFFFFF;
+    border-color: #fab526;
+  }
+  .btn-warning .caret {
+    border-top-color: #FFFFFF;
+  }
+  .btn-warning.btn-link {
+    color: #fbc658;
+  }
+  .btn-warning.btn-link:hover, .btn-warning.btn-link:focus, .btn-warning.btn-link:active, .btn-warning.btn-link.active, .open > .btn-warning.btn-link.dropdown-toggle {
+    background-color: transparent;
+    color: #fab526;
+  }
+  .btn-warning.btn-link .caret {
+    border-top-color: #fbc658;
+  }
+  .btn-warning .caret {
+    border-top-color: #FFFFFF;
+  }
+  
+  .btn-danger {
+    background-color: #f5593d;
+    border-color: #f5593d;
+    color: #FFFFFF;
+    opacity: 1;
+    filter: alpha(opacity=100);
+  }
+  .btn-danger:hover, .btn-danger:focus, .btn-danger:active, .btn-danger.active, .show > .btn-danger.dropdown-toggle {
+    background-color: #f33816;
+    color: #FFFFFF;
+    border-color: #f33816;
+  }
+  .btn-danger .caret {
+    border-top-color: #FFFFFF;
+  }
+  .btn-danger.btn-link {
+    color: #f5593d;
+  }
+  .btn-danger.btn-link:hover, .btn-danger.btn-link:focus, .btn-danger.btn-link:active, .btn-danger.btn-link.active, .open > .btn-danger.btn-link.dropdown-toggle {
+    background-color: transparent;
+    color: #f33816;
+  }
+  .btn-danger.btn-link .caret {
+    border-top-color: #f5593d;
+  }
+  .btn-danger .caret {
+    border-top-color: #FFFFFF;
+  }
+  
+  .btn-neutral {
+    background-color: #FFFFFF;
+    border-color: #FFFFFF;
+    color: #FFFFFF;
+    opacity: 1;
+    filter: alpha(opacity=100);
+  }
+  .btn-neutral:hover, .btn-neutral:focus, .btn-neutral:active, .btn-neutral.active, .show > .btn-neutral.dropdown-toggle {
+    background-color: #403D39;
+    color: #FFFFFF;
+    border-color: #403D39;
+  }
+  .btn-neutral .caret {
+    border-top-color: #FFFFFF;
+  }
+  .btn-neutral.btn-link {
+    color: #FFFFFF;
+  }
+  .btn-neutral.btn-link:hover, .btn-neutral.btn-link:focus, .btn-neutral.btn-link:active, .btn-neutral.btn-link.active, .open > .btn-neutral.btn-link.dropdown-toggle {
+    background-color: transparent;
+    color: #403D39;
+  }
+  .btn-neutral.btn-link .caret {
+    border-top-color: #FFFFFF;
+  }
+  .btn-neutral .caret {
+    border-top-color: #FFFFFF;
+  }
