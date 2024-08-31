@@ -466,7 +466,123 @@ if (isset($_SESSION['role'])) {
                         }
                     });
                 });
+           document.addEventListener('click', function(event) {
+                    var popup = document.getElementById('popup');
+                    var popupClose = document.getElementById('popup-close');
+                    if (!event.target.classList.contains('item') && event.target != popupClose) {
+                        popup.style.display = 'none';
+                    }
+                });
+
+                document.getElementById('popup-close').addEventListener('click', function() {
+                    document.getElementById('popup').style.display = 'none';
+                });
             </script>
+
+            <div class="account-wrapper" style="--delay: .8s">
+                <div class="in-header">
+                    <div class="title">In and Out</div>
+                    <div class="v">View All</div>
+                </div>
+                <div class="account card" id="ac">
+                    <div class="data">
+                        <div class="set">
+                            <span class="date">23 oct 2023</span>
+                            <div class="in_out">
+                                <div class="out">
+                                    Out: 9:00 Am
+                                </div>
+                                <div class="in">
+                                    In: 11:00 Am
+                                </div>
+                            </div>
+                            <div class="in_out">
+                                <div class="out">
+                                    Out: 1:00 pm
+                                </div>
+                                <div class="in">
+                                    In: 5:00 Am
+                                </div>
+                            </div>
+                        </div>
+                        <div class="set">
+                            <span class="date">25 oct 2023</span>
+                            <div class="in_out">
+                                <div class="out">
+                                    Out: 8:00 Am
+                                </div>
+                                <div class="in">
+                                    In: 11:00 Am
+                                </div>
+                            </div>
+                            <div class="in_out">
+                                <div class="out">
+                                    Out: 4:00 pm
+                                </div>
+                                <div class="in">
+                                    In: 5:00 Am
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="user-box second-box">
+            <div class="cards-wrapper" style="--delay: 1s">
+                <div class="cards-header">
+                    <div class="cards-header-date">
+                        <div class="title">Notice</div>
+                    </div>
+                </div>
+                <?php
+                $wing = $_SESSION["wing"];
+
+                $conn = new mysqli($host, $username, $password, $database);
+
+                if ($conn->connect_error) {
+                    die("Connection failed: " . $conn->connect_error);
+                }
+
+                $sql = "SELECT date, type, name, note, wing FROM Notice";
+                $result = $conn->query($sql);
+                ?>
+
+                <div class="cards card">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>From</th>
+                                <th>Note</th>
+                                <th>Type</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            if ($result->num_rows > 0) {
+                                while ($row = $result->fetch_assoc()) {
+                                    if ($row["wing"] == "All" || $row["wing"] == $wing) {
+                                        echo "<tr>";
+                                        echo "<td><span class='time'>" .
+                                            $row["date"] .
+                                            "</span></td>";
+                                        echo "<td>" . $row["type"] . "</td>";
+                                        echo "<td>" . $row["name"] . "</td>";
+                                        echo "<td>" . $row["note"] . "</td>";
+                                        echo "</tr>";
+                                    }
+                                }
+                            } else {
+                                echo "<tr><td colspan='4'>No notices found</td></tr>";
+                            }
+                            $conn->close();
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
     </div>
 </body>
